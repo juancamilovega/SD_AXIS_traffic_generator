@@ -1,0 +1,133 @@
+
+
+================================================================
+== Vivado HLS Report for 'sw_interface'
+================================================================
+* Date:           Mon Oct  7 23:50:43 2019
+
+* Version:        2019.1 (Build 2552052 on Fri May 24 15:28:33 MDT 2019)
+* Project:        sw_interface
+* Solution:       solution1
+* Product family: zynquplus
+* Target device:  xczu19eg-ffvc1760-2-i
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |   4.00|     1.000|        0.50|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |    0|    0|    0|    0|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+-------+---------+--------+-----+
+|       Name      | BRAM_18K| DSP48E|    FF   |   LUT  | URAM|
++-----------------+---------+-------+---------+--------+-----+
+|DSP              |        -|      -|        -|       -|    -|
+|Expression       |        -|      -|        -|       -|    -|
+|FIFO             |        -|      -|        -|       -|    -|
+|Instance         |        0|      -|      462|     748|    -|
+|Memory           |        -|      -|        -|       -|    -|
+|Multiplexer      |        -|      -|        -|       -|    -|
+|Register         |        -|      -|        -|       -|    -|
++-----------------+---------+-------+---------+--------+-----+
+|Total            |        0|      0|      462|     748|    0|
++-----------------+---------+-------+---------+--------+-----+
+|Available        |     1968|   1968|  1045440|  522720|  128|
++-----------------+---------+-------+---------+--------+-----+
+|Utilization (%)  |        0|      0|    ~0   |   ~0   |    0|
++-----------------+---------+-------+---------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    +-------------------------------+-----------------------------+---------+-------+-----+-----+-----+
+    |            Instance           |            Module           | BRAM_18K| DSP48E|  FF | LUT | URAM|
+    +-------------------------------+-----------------------------+---------+-------+-----+-----+-----+
+    |sw_interface_AXILiteS_s_axi_U  |sw_interface_AXILiteS_s_axi  |        0|      0|  462|  748|    0|
+    +-------------------------------+-----------------------------+---------+-------+-----+-----+-----+
+    |Total                          |                             |        0|      0|  462|  748|    0|
+    +-------------------------------+-----------------------------+---------+-------+-----+-----+-----+
+
+    * DSP48E: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    N/A
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    N/A
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------+-----+-----+--------------+--------------------+--------------+
+|        RTL Ports       | Dir | Bits|   Protocol   |    Source Object   |    C Type    |
++------------------------+-----+-----+--------------+--------------------+--------------+
+|s_axi_AXILiteS_AWVALID  |  in |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_AWREADY  | out |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_AWADDR   |  in |    7|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_WVALID   |  in |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_WREADY   | out |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_WDATA    |  in |   32|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_WSTRB    |  in |    4|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_ARVALID  |  in |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_ARREADY  | out |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_ARADDR   |  in |    7|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_RVALID   | out |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_RREADY   |  in |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_RDATA    | out |   32|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_RRESP    | out |    2|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_BVALID   | out |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_BREADY   |  in |    1|     s_axi    |      AXILiteS      |    pointer   |
+|s_axi_AXILiteS_BRESP    | out |    2|     s_axi    |      AXILiteS      |    pointer   |
+|start_V                 | out |    1|    ap_none   |       start_V      |    pointer   |
+|rst_V                   | out |    1|    ap_none   |        rst_V       |    pointer   |
+|transfer_length_V       | out |   64|    ap_none   |  transfer_length_V |    pointer   |
+|mismatch_V              |  in |    1|    ap_none   |     mismatch_V     |    scalar    |
+|tx_timeElapse_V         |  in |   32|    ap_none   |   tx_timeElapse_V  |    scalar    |
+|rx_timeElapse_V         |  in |   32|    ap_none   |   rx_timeElapse_V  |    scalar    |
+|tx_timestamp_sum_V      |  in |   64|    ap_none   | tx_timestamp_sum_V |    scalar    |
+|rx_timestamp_sum_V      |  in |   64|    ap_none   | rx_timestamp_sum_V |    scalar    |
+|pkt_cnt_tx_V            |  in |   32|    ap_none   |    pkt_cnt_tx_V    |    scalar    |
+|pkt_cnt_rx_V            |  in |   32|    ap_none   |    pkt_cnt_rx_V    |    scalar    |
+|ap_clk                  |  in |    1| ap_ctrl_none |    sw_interface    | return value |
+|ap_rst_n                |  in |    1| ap_ctrl_none |    sw_interface    | return value |
++------------------------+-----+-----+--------------+--------------------+--------------+
+

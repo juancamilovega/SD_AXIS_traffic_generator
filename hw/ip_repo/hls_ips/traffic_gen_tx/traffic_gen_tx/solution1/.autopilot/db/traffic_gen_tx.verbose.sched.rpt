@@ -1,0 +1,207 @@
+
+
+================================================================
+== Vivado HLS Report for 'traffic_gen_tx'
+================================================================
+* Date:           Mon Oct  7 23:53:06 2019
+
+* Version:        2019.1 (Build 2552052 on Fri May 24 15:28:33 MDT 2019)
+* Project:        traffic_gen_tx
+* Solution:       solution1
+* Product family: zynquplus
+* Target device:  xczu19eg-ffvc1760-2-i
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |   4.00|     2.031|        0.50|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |    0|    0|    0|    0|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 0
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 1
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 2.03>
+ST_1 : Operation 2 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i512* %from_decoder_tdata_V), !map !70"   --->   Operation 2 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 3 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i64* %from_decoder_tkeep_V), !map !74"   --->   Operation 3 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %from_decoder_tlast_V), !map !78"   --->   Operation 4 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %from_decoder_tvalid_V), !map !82"   --->   Operation 5 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i512* %to_app_tdata_V), !map !86"   --->   Operation 6 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i64* %to_app_tkeep_V), !map !90"   --->   Operation 7 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %to_app_tlast_V), !map !94"   --->   Operation 8 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %to_app_tvalid_V), !map !98"   --->   Operation 9 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i512* %to_cmp_fifo_tdata_V), !map !102"   --->   Operation 10 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i64* %to_cmp_fifo_tkeep_V), !map !106"   --->   Operation 11 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %to_cmp_fifo_tlast_V), !map !110"   --->   Operation 12 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %to_cmp_fifo_tvalid_V), !map !114"   --->   Operation 13 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %from_decoder_tready_V), !map !118"   --->   Operation 14 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1 %to_app_tready_V), !map !122"   --->   Operation 15 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i32* %tx_timeElapse_V), !map !128"   --->   Operation 16 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i64* %tx_timestamp_sum_V), !map !132"   --->   Operation 17 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i32* %pkt_cnt_tx_V), !map !136"   --->   Operation 18 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i32* %time_cnt_V), !map !140"   --->   Operation 19 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecTopModule([15 x i8]* @traffic_gen_tx_str) nounwind"   --->   Operation 20 'spectopmodule' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.00ns)   --->   "%to_app_tready_V_read = call i1 @_ssdm_op_Read.ap_none.i1(i1 %to_app_tready_V)" [src/traffic_gen_tx.cpp:3]   --->   Operation 21 'read' 'to_app_tready_V_read' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 22 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i32 0, [13 x i8]* @p_str, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:13]   --->   Operation 22 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 23 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i512* %from_decoder_tdata_V, i64* %from_decoder_tkeep_V, i1* %from_decoder_tlast_V, i1* %from_decoder_tvalid_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:14]   --->   Operation 23 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 24 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1* %from_decoder_tready_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:15]   --->   Operation 24 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 25 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i512* %to_app_tdata_V, i64* %to_app_tkeep_V, i1* %to_app_tlast_V, i1* %to_app_tvalid_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:16]   --->   Operation 25 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 26 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i1 %to_app_tready_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:17]   --->   Operation 26 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 27 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i512* %to_cmp_fifo_tdata_V, i64* %to_cmp_fifo_tkeep_V, i1* %to_cmp_fifo_tlast_V, i1* %to_cmp_fifo_tvalid_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:18]   --->   Operation 27 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 28 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i32* %tx_timeElapse_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:19]   --->   Operation 28 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 29 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i64* %tx_timestamp_sum_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:20]   --->   Operation 29 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 30 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i32* %pkt_cnt_tx_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:21]   --->   Operation 30 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 31 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i32* %time_cnt_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_gen_tx.cpp:22]   --->   Operation 31 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 32 [1/1] (0.00ns)   --->   "%tx_timeElapse_reg_V_s = load i32* @tx_timeElapse_reg_V, align 4" [src/traffic_gen_tx.cpp:31]   --->   Operation 32 'load' 'tx_timeElapse_reg_V_s' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 33 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i32P(i32* %tx_timeElapse_V, i32 %tx_timeElapse_reg_V_s)" [src/traffic_gen_tx.cpp:31]   --->   Operation 33 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 34 [1/1] (0.00ns)   --->   "%tx_timestamp_sum_reg_1 = load i64* @tx_timestamp_sum_reg, align 8" [src/traffic_gen_tx.cpp:32]   --->   Operation 34 'load' 'tx_timestamp_sum_reg_1' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 35 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i64P(i64* %tx_timestamp_sum_V, i64 %tx_timestamp_sum_reg_1)" [src/traffic_gen_tx.cpp:32]   --->   Operation 35 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 36 [1/1] (0.00ns)   --->   "%t_V = load i32* @pkt_cnt_tx_reg_V, align 4" [src/traffic_gen_tx.cpp:33]   --->   Operation 36 'load' 't_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 37 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i32P(i32* %pkt_cnt_tx_V, i32 %t_V)" [src/traffic_gen_tx.cpp:33]   --->   Operation 37 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 38 [1/1] (0.00ns)   --->   "%rhs_V = load i1* @start_flag_V, align 1" [src/traffic_gen_tx.cpp:36]   --->   Operation 38 'load' 'rhs_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 39 [1/1] (0.28ns)   --->   "%ret_V = and i1 %rhs_V, %to_app_tready_V_read" [src/traffic_gen_tx.cpp:36]   --->   Operation 39 'and' 'ret_V' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 40 [1/1] (0.00ns)   --->   "%p_Val2_s = load i32* @time_cnt_reg_V, align 4" [src/traffic_gen_tx.cpp:37]   --->   Operation 40 'load' 'p_Val2_s' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 41 [1/1] (0.00ns)   --->   "%from_decoder_tvalid_s = call i1 @_ssdm_op_Read.ap_none.i1P(i1* %from_decoder_tvalid_V)" [src/traffic_gen_tx.cpp:36]   --->   Operation 41 'read' 'from_decoder_tvalid_s' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 42 [1/1] (0.00ns)   --->   "%from_decoder_tlast_V_1 = call i1 @_ssdm_op_Read.ap_none.i1P(i1* %from_decoder_tlast_V)" [src/traffic_gen_tx.cpp:36]   --->   Operation 42 'read' 'from_decoder_tlast_V_1' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 43 [1/1] (0.00ns)   --->   "%from_decoder_tkeep_V_1 = call i64 @_ssdm_op_Read.ap_none.i64P(i64* %from_decoder_tkeep_V)" [src/traffic_gen_tx.cpp:36]   --->   Operation 43 'read' 'from_decoder_tkeep_V_1' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 44 [1/1] (0.00ns) (grouped into LUT with out node and_ln36_3)   --->   "%and_ln36_1 = and i1 %from_decoder_tlast_V_1, %ret_V" [src/traffic_gen_tx.cpp:36]   --->   Operation 44 'and' 'and_ln36_1' <Predicate = true> <Delay = 0.00> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 45 [1/1] (0.00ns) (grouped into LUT with out node and_ln36_3)   --->   "%and_ln36_2 = and i1 %and_ln36_1, %from_decoder_tvalid_s" [src/traffic_gen_tx.cpp:36]   --->   Operation 45 'and' 'and_ln36_2' <Predicate = true> <Delay = 0.00> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 46 [1/1] (1.13ns)   --->   "%icmp_ln883 = icmp ne i64 %from_decoder_tkeep_V_1, 0" [src/traffic_gen_tx.cpp:36]   --->   Operation 46 'icmp' 'icmp_ln883' <Predicate = true> <Delay = 1.13> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 1.13> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 47 [1/1] (0.28ns) (out node of the LUT)   --->   "%and_ln36_3 = and i1 %and_ln36_2, %icmp_ln883" [src/traffic_gen_tx.cpp:36]   --->   Operation 47 'and' 'and_ln36_3' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 48 [1/1] (0.00ns)   --->   "br i1 %and_ln36_3, label %0, label %._crit_edge184" [src/traffic_gen_tx.cpp:36]   --->   Operation 48 'br' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 49 [1/1] (0.00ns)   --->   "%tx_start_V_load = load i32* @tx_start_V, align 4" [src/traffic_gen_tx.cpp:37]   --->   Operation 49 'load' 'tx_start_V_load' <Predicate = (and_ln36_3)> <Delay = 0.00>
+ST_1 : Operation 50 [1/1] (1.01ns)   --->   "%sub_ln214 = sub i32 %p_Val2_s, %tx_start_V_load" [src/traffic_gen_tx.cpp:37]   --->   Operation 50 'sub' 'sub_ln214' <Predicate = (and_ln36_3)> <Delay = 1.01> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 1.01> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 51 [1/1] (0.00ns)   --->   "store i32 %sub_ln214, i32* @tx_timeElapse_reg_V, align 4" [src/traffic_gen_tx.cpp:37]   --->   Operation 51 'store' <Predicate = (and_ln36_3)> <Delay = 0.00>
+ST_1 : Operation 52 [1/1] (0.00ns)   --->   "%zext_ln700 = zext i32 %p_Val2_s to i64" [src/traffic_gen_tx.cpp:38]   --->   Operation 52 'zext' 'zext_ln700' <Predicate = (and_ln36_3)> <Delay = 0.00>
+ST_1 : Operation 53 [1/1] (1.08ns)   --->   "%add_ln700 = add i64 %tx_timestamp_sum_reg_1, %zext_ln700" [src/traffic_gen_tx.cpp:38]   --->   Operation 53 'add' 'add_ln700' <Predicate = (and_ln36_3)> <Delay = 1.08> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 1.01> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 54 [1/1] (0.00ns)   --->   "store i64 %add_ln700, i64* @tx_timestamp_sum_reg, align 8" [src/traffic_gen_tx.cpp:38]   --->   Operation 54 'store' <Predicate = (and_ln36_3)> <Delay = 0.00>
+ST_1 : Operation 55 [1/1] (1.01ns)   --->   "%add_ln700_1 = add i32 %t_V, 1" [src/traffic_gen_tx.cpp:39]   --->   Operation 55 'add' 'add_ln700_1' <Predicate = (and_ln36_3)> <Delay = 1.01> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 1.01> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 56 [1/1] (0.00ns)   --->   "store i32 %add_ln700_1, i32* @pkt_cnt_tx_reg_V, align 4" [src/traffic_gen_tx.cpp:39]   --->   Operation 56 'store' <Predicate = (and_ln36_3)> <Delay = 0.00>
+ST_1 : Operation 57 [1/1] (0.00ns)   --->   "br label %._crit_edge184" [src/traffic_gen_tx.cpp:40]   --->   Operation 57 'br' <Predicate = (and_ln36_3)> <Delay = 0.00>
+ST_1 : Operation 58 [1/1] (0.00ns)   --->   "%start_initialized_V_s = load i1* @start_initialized_V, align 1" [src/traffic_gen_tx.cpp:42]   --->   Operation 58 'load' 'start_initialized_V_s' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 59 [1/1] (0.00ns)   --->   "br i1 %start_initialized_V_s, label %._crit_edge189, label %1" [src/traffic_gen_tx.cpp:42]   --->   Operation 59 'br' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 60 [1/1] (0.00ns)   --->   "store i32 %p_Val2_s, i32* @tx_start_V, align 4" [src/traffic_gen_tx.cpp:42]   --->   Operation 60 'store' <Predicate = (!start_initialized_V_s)> <Delay = 0.00>
+ST_1 : Operation 61 [1/1] (0.00ns)   --->   "br label %._crit_edge189" [src/traffic_gen_tx.cpp:42]   --->   Operation 61 'br' <Predicate = (!start_initialized_V_s)> <Delay = 0.00>
+ST_1 : Operation 62 [1/1] (0.00ns) (grouped into LUT with out node and_ln43_1)   --->   "%and_ln43 = and i1 %from_decoder_tvalid_s, %ret_V" [src/traffic_gen_tx.cpp:43]   --->   Operation 62 'and' 'and_ln43' <Predicate = true> <Delay = 0.00> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 63 [1/1] (0.28ns) (out node of the LUT)   --->   "%and_ln43_1 = and i1 %and_ln43, %icmp_ln883" [src/traffic_gen_tx.cpp:43]   --->   Operation 63 'and' 'and_ln43_1' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 64 [1/1] (0.00ns)   --->   "br i1 %and_ln43_1, label %2, label %._crit_edge190_ifconv" [src/traffic_gen_tx.cpp:43]   --->   Operation 64 'br' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 65 [1/1] (0.00ns)   --->   "store i1 true, i1* @start_initialized_V, align 1" [src/traffic_gen_tx.cpp:43]   --->   Operation 65 'store' <Predicate = (and_ln43_1)> <Delay = 0.00>
+ST_1 : Operation 66 [1/1] (0.00ns)   --->   "br label %._crit_edge190_ifconv" [src/traffic_gen_tx.cpp:43]   --->   Operation 66 'br' <Predicate = (and_ln43_1)> <Delay = 0.00>
+ST_1 : Operation 67 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i1P(i1* %from_decoder_tready_V, i1 %ret_V)" [src/traffic_gen_tx.cpp:45]   --->   Operation 67 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 68 [1/1] (0.00ns)   --->   "%from_decoder_tdata_V_1 = call i512 @_ssdm_op_Read.ap_none.i512P(i512* %from_decoder_tdata_V)" [include/traffic_gen_tx.h:2->src/traffic_gen_tx.cpp:47]   --->   Operation 68 'read' 'from_decoder_tdata_V_1' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 69 [1/1] (0.28ns)   --->   "%and_ln544 = and i1 %rhs_V, %from_decoder_tvalid_s" [src/traffic_gen_tx.cpp:36]   --->   Operation 69 'and' 'and_ln544' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 70 [1/1] (0.28ns)   --->   "%and_ln883 = and i1 %and_ln544, %icmp_ln883" [src/traffic_gen_tx.cpp:46]   --->   Operation 70 'and' 'and_ln883' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 71 [1/1] (0.61ns)   --->   "%select_ln883 = select i1 %and_ln883, i512 %from_decoder_tdata_V_1, i512 0" [src/traffic_gen_tx.cpp:46]   --->   Operation 71 'select' 'select_ln883' <Predicate = true> <Delay = 0.61> <Core = "Sel">   --->   Core 26 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_1 : Operation 72 [1/1] (0.42ns)   --->   "%select_ln883_1 = select i1 %and_ln883, i64 %from_decoder_tkeep_V_1, i64 0" [src/traffic_gen_tx.cpp:46]   --->   Operation 72 'select' 'select_ln883_1' <Predicate = true> <Delay = 0.42> <Core = "Sel">   --->   Core 26 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_1 : Operation 73 [1/1] (0.28ns)   --->   "%and_ln883_1 = and i1 %from_decoder_tlast_V_1, %and_ln883" [src/traffic_gen_tx.cpp:46]   --->   Operation 73 'and' 'and_ln883_1' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 74 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i512P(i512* %to_app_tdata_V, i512 %select_ln883)" [include/traffic_gen_tx.h:2->src/traffic_gen_tx.cpp:49]   --->   Operation 74 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 75 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i64P(i64* %to_app_tkeep_V, i64 %select_ln883_1)" [include/traffic_gen_tx.h:2->src/traffic_gen_tx.cpp:47]   --->   Operation 75 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 76 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i1P(i1* %to_app_tlast_V, i1 %and_ln883_1)" [include/traffic_gen_tx.h:2->src/traffic_gen_tx.cpp:47]   --->   Operation 76 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 77 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i1P(i1* %to_app_tvalid_V, i1 %and_ln883)" [include/traffic_gen_tx.h:2->src/traffic_gen_tx.cpp:47]   --->   Operation 77 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 78 [1/1] (0.00ns) (grouped into LUT with out node and_ln51_1)   --->   "%and_ln51 = and i1 %and_ln544, %to_app_tready_V_read" [src/traffic_gen_tx.cpp:51]   --->   Operation 78 'and' 'and_ln51' <Predicate = true> <Delay = 0.00> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 79 [1/1] (0.28ns) (out node of the LUT)   --->   "%and_ln51_1 = and i1 %and_ln51, %icmp_ln883" [src/traffic_gen_tx.cpp:51]   --->   Operation 79 'and' 'and_ln51_1' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 80 [1/1] (0.61ns)   --->   "%select_ln51 = select i1 %and_ln51_1, i512 %from_decoder_tdata_V_1, i512 0" [src/traffic_gen_tx.cpp:51]   --->   Operation 80 'select' 'select_ln51' <Predicate = true> <Delay = 0.61> <Core = "Sel">   --->   Core 26 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_1 : Operation 81 [1/1] (0.42ns)   --->   "%select_ln51_1 = select i1 %and_ln51_1, i64 %from_decoder_tkeep_V_1, i64 0" [src/traffic_gen_tx.cpp:51]   --->   Operation 81 'select' 'select_ln51_1' <Predicate = true> <Delay = 0.42> <Core = "Sel">   --->   Core 26 'Sel' <Latency = 0> <II = 1> <Delay = 0.42> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_1 : Operation 82 [1/1] (0.28ns)   --->   "%and_ln51_2 = and i1 %from_decoder_tlast_V_1, %and_ln51_1" [src/traffic_gen_tx.cpp:51]   --->   Operation 82 'and' 'and_ln51_2' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 83 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i512P(i512* %to_cmp_fifo_tdata_V, i512 %select_ln51)" [include/traffic_gen_tx.h:2->src/traffic_gen_tx.cpp:54]   --->   Operation 83 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 84 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i64P(i64* %to_cmp_fifo_tkeep_V, i64 %select_ln51_1)" [include/traffic_gen_tx.h:2->src/traffic_gen_tx.cpp:52]   --->   Operation 84 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 85 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i1P(i1* %to_cmp_fifo_tlast_V, i1 %and_ln51_2)" [include/traffic_gen_tx.h:2->src/traffic_gen_tx.cpp:52]   --->   Operation 85 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 86 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i1P(i1* %to_cmp_fifo_tvalid_V, i1 %and_ln51_1)" [include/traffic_gen_tx.h:2->src/traffic_gen_tx.cpp:52]   --->   Operation 86 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 87 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i32P(i32* %time_cnt_V, i32 %p_Val2_s)" [src/traffic_gen_tx.cpp:56]   --->   Operation 87 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 88 [1/1] (0.00ns)   --->   "%tmp = call i1 @_ssdm_op_BitSelect.i1.i32.i32(i32 %p_Val2_s, i32 5)" [src/traffic_gen_tx.cpp:57]   --->   Operation 88 'bitselect' 'tmp' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 89 [1/1] (0.00ns)   --->   "br i1 %tmp, label %3, label %._crit_edge201" [src/traffic_gen_tx.cpp:57]   --->   Operation 89 'br' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 90 [1/1] (0.00ns)   --->   "store i1 true, i1* @start_flag_V, align 1" [src/traffic_gen_tx.cpp:57]   --->   Operation 90 'store' <Predicate = (tmp)> <Delay = 0.00>
+ST_1 : Operation 91 [1/1] (0.00ns)   --->   "br label %._crit_edge201" [src/traffic_gen_tx.cpp:57]   --->   Operation 91 'br' <Predicate = (tmp)> <Delay = 0.00>
+ST_1 : Operation 92 [1/1] (0.00ns)   --->   "%core_on_V_load = load i1* @core_on_V, align 1" [src/traffic_gen_tx.cpp:59]   --->   Operation 92 'load' 'core_on_V_load' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 93 [1/1] (0.00ns)   --->   "br i1 %core_on_V_load, label %4, label %5" [src/traffic_gen_tx.cpp:59]   --->   Operation 93 'br' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 94 [1/1] (0.00ns)   --->   "br i1 %from_decoder_tvalid_s, label %6, label %._crit_edge202" [src/traffic_gen_tx.cpp:61]   --->   Operation 94 'br' <Predicate = (!core_on_V_load)> <Delay = 0.00>
+ST_1 : Operation 95 [1/1] (0.00ns)   --->   "store i1 true, i1* @core_on_V, align 1" [src/traffic_gen_tx.cpp:62]   --->   Operation 95 'store' <Predicate = (!core_on_V_load & from_decoder_tvalid_s)> <Delay = 0.00>
+ST_1 : Operation 96 [1/1] (0.00ns)   --->   "br label %._crit_edge202" [src/traffic_gen_tx.cpp:63]   --->   Operation 96 'br' <Predicate = (!core_on_V_load & from_decoder_tvalid_s)> <Delay = 0.00>
+ST_1 : Operation 97 [1/1] (0.00ns)   --->   "br label %7"   --->   Operation 97 'br' <Predicate = (!core_on_V_load)> <Delay = 0.00>
+ST_1 : Operation 98 [1/1] (1.01ns)   --->   "%add_ln700_2 = add i32 %p_Val2_s, 1" [src/traffic_gen_tx.cpp:60]   --->   Operation 98 'add' 'add_ln700_2' <Predicate = (core_on_V_load)> <Delay = 1.01> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 1.01> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 99 [1/1] (0.00ns)   --->   "store i32 %add_ln700_2, i32* @time_cnt_reg_V, align 4" [src/traffic_gen_tx.cpp:60]   --->   Operation 99 'store' <Predicate = (core_on_V_load)> <Delay = 0.00>
+ST_1 : Operation 100 [1/1] (0.00ns)   --->   "br label %7" [src/traffic_gen_tx.cpp:61]   --->   Operation 100 'br' <Predicate = (core_on_V_load)> <Delay = 0.00>
+ST_1 : Operation 101 [1/1] (0.00ns)   --->   "ret void" [src/traffic_gen_tx.cpp:64]   --->   Operation 101 'ret' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 4ns, clock uncertainty: 0.5ns.
+
+ <State 1>: 2.03ns
+The critical path consists of the following:
+	wire read on port 'from_decoder_tkeep_V' (src/traffic_gen_tx.cpp:36) [68]  (0 ns)
+	'icmp' operation ('icmp_ln883', src/traffic_gen_tx.cpp:36) [71]  (1.13 ns)
+	'and' operation ('and_ln883', src/traffic_gen_tx.cpp:46) [101]  (0.287 ns)
+	'select' operation ('select_ln883', src/traffic_gen_tx.cpp:46) [102]  (0.614 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A

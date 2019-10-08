@@ -1,0 +1,9 @@
+{
+	"version": "1.0",
+	"modules": {
+		"sw_interface": {
+			"proto_instances": {
+			}
+		}
+	}
+}

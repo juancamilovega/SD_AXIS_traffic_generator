@@ -1,0 +1,9 @@
+{
+	"version": "1.0",
+	"modules": {
+		"traffic_gen_tx": {
+			"proto_instances": {
+			}
+		}
+	}
+}
