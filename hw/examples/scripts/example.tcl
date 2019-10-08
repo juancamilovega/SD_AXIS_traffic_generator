@@ -73,7 +73,6 @@ current_bd_instance "/ddr_wrap"
 
 # Create interface pins
 create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:ddr4_rtl:1.0 C0_DDR4_0
-set_property name C0_DDR4_0 [get_bd_intf_ports C0_DDR4_0_0]
 create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:aximm_rtl:1.0 C0_DDR4_S_AXI
 create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 C0_SYS_CLK_0
 
@@ -197,6 +196,7 @@ make_bd_intf_pins_external [get_bd_intf_pins xdma_wrap/sys]
 set_property name sys [get_bd_intf_ports sys_0]
 make_bd_intf_pins_external [get_bd_intf_pins xdma_wrap/pcie_mgt_0]
 make_bd_intf_pins_external [get_bd_intf_pins ddr_wrap/C0_DDR4_0]
+set_property name C0_DDR4_0 [get_bd_intf_ports C0_DDR4_0_0]
 make_bd_intf_pins_external  [get_bd_intf_pins ddr_wrap/C0_SYS_CLK_0]
 set_property name C0_SYS_CLK_0 [get_bd_intf_ports C0_SYS_CLK_0_0]
 
