@@ -54,7 +54,6 @@ void sw_interface (
 	#pragma HLS INTERFACE ap_none port=pkt_cnt_tx
 	#pragma HLS INTERFACE ap_none port=pkt_cnt_rx
 
-	static ap_uint<1> start_reg;
 	start = axil_start;
 	rst = axil_rst;
 	transfer_length = (axil_len_high,axil_len_low);
@@ -67,9 +66,4 @@ void sw_interface (
 	axil_rx_timestamp_sum_high = rx_timestamp_sum(63,32);
 	axil_pkt_cnt_tx = pkt_cnt_tx;
 	axil_pkt_cnt_rx = pkt_cnt_rx;
-	if (axil_rst) {
-		start_reg = 0;
-	} else {
-		start_reg = axil_start;
-	}
 }
