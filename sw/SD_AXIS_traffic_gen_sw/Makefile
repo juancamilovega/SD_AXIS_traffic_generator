@@ -21,4 +21,4 @@ $(TMPDIR)/do_test.o: include/* src/*
 	$(CC) -c $(C_FLAGS) $(HEADERS) -o $(TMPDIR)/do_test.o src/do_test.cpp
 
 clean:
-	rm -f tmp/* output/*
+	rm -f tmp/*.o output/*
