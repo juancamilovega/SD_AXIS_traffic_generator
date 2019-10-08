@@ -1,5 +1,6 @@
 module traffic_gen_top #
 (
+	parameter BIGENDIAN = 1,
 	parameter DWIDTH = 512,
 	parameter EN_DATA = 1,
 	parameter EN_KEEP = 1,
@@ -95,6 +96,11 @@ module traffic_gen_top #
 	wire from_app_tlast_wide;
 	wire from_app_tready_wide;
 	wire from_app_tvalid_wide;
+	//for endianess converter
+	wire [DWIDTH-1:0] to_app_tdata_w;
+	wire [DWIDTH/8-1:0] to_app_tkeep_w;
+ 	wire [DWIDTH-1:0] from_app_tdata_w;
+	wire [DWIDTH/8-1:0] from_app_tkeep_w;
 
 //to loopback signals
 	wire mismatch;
@@ -179,8 +185,8 @@ dwidth_adjust_tx_i (
 	.s_last(to_app_tlast_wide),
 	.m_valid(to_app_tvalid),
 	.m_ready(to_app_tready),
-	.m_data(to_app_tdata),
-	.m_keep(to_app_tkeep),
+	.m_data(to_app_tdata_w),
+	.m_keep(to_app_tkeep_w),
 	.m_last(to_app_tlast)
 );
 
@@ -195,8 +201,8 @@ if (EN_LOOPBACK) begin
 		dwidth_adjust_rx_i (
 			.s_valid(from_app_tvalid),
 			.s_ready(from_app_tready),
-			.s_data(from_app_tdata),
-			.s_keep(from_app_tkeep),
+			.s_data(from_app_tdata_w),
+			.s_keep(from_app_tkeep_w),
 			.s_last(from_app_tlast),
 			.m_valid(from_app_tvalid_wide),
 			.m_ready(from_app_tready_wide),
@@ -230,6 +236,22 @@ else begin
 	assign rx_timeElapse = 32'd0;
 	assign rx_timestamp_sum = 64'd0;
 end
+if (BIGENDIAN) begin
+	assign to_app_tdata = to_app_tdata_w;
+	assign to_app_tkeep = to_app_tkeep_w;
+	assign from_app_tdata_w = from_app_tdata;
+	assign from_app_tkeep_w = from_app_tkeep;
+end
+else begin
+	genvar i;
+	for (i = 0; i < DWIDTH/8; i = i + 1) begin: endianness_convert
+		assign to_app_tdata[DWIDTH-i*8-1:DWIDTH-i*8-8] = to_app_tdata_w[i*8+7:i*8];
+		assign to_app_tkeep[DWIDTH/8-i] = to_app_tkeep_w[i];
+		assign from_app_tdata_w[DWIDTH-i*8-1:DWIDTH-i*8-8] = from_app_tdata[i*8+7:i*8];
+		assign from_app_tkeep_w[DWIDTH/8-i] = from_app_tkeep[i];
+	end
+end
+
 //tx
 	assign mismatch_dbg = mismatch;
 	assign time_cnt_dbg = time_cnt;
