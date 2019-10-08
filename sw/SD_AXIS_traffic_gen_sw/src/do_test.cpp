@@ -74,8 +74,8 @@ int do_test(u64 mem_size, u32 actual_size, u32 packet_num, u32 iter_num) {
 		rx_timestamp_sum += (u64)read_int(map_base, RX_TIMESTAMP_SUM_LOW)+(((u64)read_int(map_base, RX_TIMESTAMP_SUM_HIGH)) << 32);
 		tx_timeElapse += ((double)read_int(map_base, TX_TIME_ELAPSE))*clock_period;
 		rx_timeElapse += ((double)read_int(map_base, RX_TIME_ELAPSE))*clock_period;
-		//minimal transfer size for the datamover is set to 4M byte, which is 65535 cycles for 64-byte datawidth, ddr clock period is around 3 ns, so we wait for 65535*3=196605 nano second
-		usleep(196605);
+		//minimal transfer size for the datamover is set to 4K byte, which is 64 cycles for 64-byte datawidth, ddr clock period is around 3 ns, so we wait for 64*3=192 nano second, considered the propoganda delay, we wait for 2 us
+		usleep(2000);
 	}
 
 	latency = ((double)(rx_timestamp_sum-tx_timestamp_sum))*clock_period;
