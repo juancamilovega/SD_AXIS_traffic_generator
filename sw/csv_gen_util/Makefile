@@ -21,4 +21,4 @@ $(TMPDIR)/packet.o: include/* src/*
 	$(CC) -c $(C_FLAGS) $(HEADERS) -o $(TMPDIR)/packet.o src/packet.cpp
 
 clean:
-	rm -f tmp/* output/*
+	rm -f tmp/*.o output/*
