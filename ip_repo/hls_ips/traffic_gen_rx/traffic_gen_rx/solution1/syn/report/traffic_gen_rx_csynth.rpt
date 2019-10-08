@@ -1,0 +1,204 @@
+
+
+================================================================
+== Vivado HLS Report for 'traffic_gen_rx'
+================================================================
+* Date:           Mon Oct  7 23:52:24 2019
+
+* Version:        2019.1 (Build 2552052 on Fri May 24 15:28:33 MDT 2019)
+* Project:        traffic_gen_rx
+* Solution:       solution1
+* Product family: zynquplus
+* Target device:  xczu19eg-ffvc1760-2-i
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |   3.10|     1.715|        0.39|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |    0|    0|    0|    0|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+
+
+================================================================
+== Utilization Estimates
+================================================================
+* Summary: 
++-----------------+---------+-------+---------+--------+-----+
+|       Name      | BRAM_18K| DSP48E|    FF   |   LUT  | URAM|
++-----------------+---------+-------+---------+--------+-----+
+|DSP              |        -|      -|        -|       -|    -|
+|Expression       |        -|      -|        0|    1511|    -|
+|FIFO             |        -|      -|        -|       -|    -|
+|Instance         |        -|      -|        -|       -|    -|
+|Memory           |        -|      -|        -|       -|    -|
+|Multiplexer      |        -|      -|        -|       -|    -|
+|Register         |        -|      -|      163|       -|    -|
++-----------------+---------+-------+---------+--------+-----+
+|Total            |        0|      0|      163|    1511|    0|
++-----------------+---------+-------+---------+--------+-----+
+|Available        |     1968|   1968|  1045440|  522720|  128|
++-----------------+---------+-------+---------+--------+-----+
+|Utilization (%)  |        0|      0|    ~0   |   ~0   |    0|
++-----------------+---------+-------+---------+--------+-----+
+
++ Detail: 
+    * Instance: 
+    N/A
+
+    * DSP48E: 
+    N/A
+
+    * Memory: 
+    N/A
+
+    * FIFO: 
+    N/A
+
+    * Expression: 
+    +-------------------------+----------+-------+---+-----+------------+------------+
+    |      Variable Name      | Operation| DSP48E| FF| LUT | Bitwidth P0| Bitwidth P1|
+    +-------------------------+----------+-------+---+-----+------------+------------+
+    |add_ln700_1_fu_361_p2    |     +    |      0|  0|   39|          32|           1|
+    |add_ln700_fu_349_p2      |     +    |      0|  0|   71|          64|          64|
+    |sub_ln214_fu_333_p2      |     -    |      0|  0|   39|          32|          32|
+    |and_ln883_fu_1548_p2     |    and   |      0|  0|  512|         512|         512|
+    |ret_V_fu_323_p2          |    and   |      0|  0|    2|           1|           1|
+    |icmp_ln883_1_fu_1560_p2  |   icmp   |      0|  0|   29|          64|          64|
+    |icmp_ln883_fu_1554_p2    |   icmp   |      0|  0|  179|         512|           1|
+    |select_ln10_fu_494_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln11_fu_510_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln12_fu_526_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln13_fu_542_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln14_fu_558_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln15_fu_574_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln16_fu_590_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln17_fu_606_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln18_fu_622_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln19_fu_638_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln20_fu_654_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln21_fu_670_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln22_fu_686_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln23_fu_702_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln24_fu_718_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln25_fu_734_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln26_fu_750_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln27_fu_766_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln28_fu_782_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln29_fu_798_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln30_fu_814_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln31_fu_830_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln32_fu_846_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln33_fu_862_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln34_fu_878_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln35_fu_894_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln36_fu_910_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln37_fu_926_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln38_fu_942_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln39_fu_958_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln40_fu_974_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln41_fu_990_p3    |  select  |      0|  0|    2|           1|           2|
+    |select_ln42_fu_1006_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln43_fu_1022_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln44_fu_1038_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln45_fu_1054_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln46_fu_1070_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln47_fu_1086_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln48_fu_1102_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln49_fu_1118_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln50_fu_1134_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln51_fu_1150_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln52_fu_1166_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln53_fu_1182_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln54_fu_1198_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln55_fu_1214_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln56_fu_1230_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln57_fu_1246_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln58_fu_1262_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln59_fu_1278_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln5_fu_414_p3     |  select  |      0|  0|    2|           1|           2|
+    |select_ln60_fu_1294_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln61_fu_1310_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln62_fu_1326_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln63_fu_1342_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln64_fu_1358_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln65_fu_1374_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln66_fu_1390_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln67_fu_1398_p3   |  select  |      0|  0|    2|           1|           2|
+    |select_ln6_fu_430_p3     |  select  |      0|  0|    2|           1|           2|
+    |select_ln7_fu_446_p3     |  select  |      0|  0|    2|           1|           2|
+    |select_ln8_fu_462_p3     |  select  |      0|  0|    2|           1|           2|
+    |select_ln9_fu_478_p3     |  select  |      0|  0|    2|           1|           2|
+    |xor_ln883_1_fu_1566_p2   |    xor   |      0|  0|    2|           1|           1|
+    |xor_ln883_fu_1542_p2     |    xor   |      0|  0|  512|         512|         512|
+    +-------------------------+----------+-------+---+-----+------------+------------+
+    |Total                    |          |      0|  0| 1511|        1793|        1314|
+    +-------------------------+----------+-------+---+-----+------------+------------+
+
+    * Multiplexer: 
+    N/A
+
+    * Register: 
+    +----------------------+----+----+-----+-----------+
+    |         Name         | FF | LUT| Bits| Const Bits|
+    +----------------------+----+----+-----+-----------+
+    |ap_CS_fsm             |   1|   0|    1|          0|
+    |mismatch_reg_V        |   1|   0|    1|          0|
+    |pkt_cnt_rx_reg_V      |  32|   0|   32|          0|
+    |rx_start_V            |  32|   0|   32|          0|
+    |rx_timeElapse_reg_V   |  32|   0|   32|          0|
+    |rx_timestamp_sum_reg  |  64|   0|   64|          0|
+    |start_initialized_V   |   1|   0|    1|          0|
+    +----------------------+----+----+-----+-----------+
+    |Total                 | 163|   0|  163|          0|
+    +----------------------+----+----+-----+-----------+
+
+
+
+================================================================
+== Interface
+================================================================
+* Summary: 
++------------------------+-----+-----+--------------+------------------------+--------------+
+|        RTL Ports       | Dir | Bits|   Protocol   |      Source Object     |    C Type    |
++------------------------+-----+-----+--------------+------------------------+--------------+
+|ap_clk                  |  in |    1| ap_ctrl_none |     traffic_gen_rx     | return value |
+|ap_rst                  |  in |    1| ap_ctrl_none |     traffic_gen_rx     | return value |
+|from_app_tdata_V        |  in |  512|    ap_none   |    from_app_tdata_V    |    pointer   |
+|from_app_tkeep_V        |  in |   64|    ap_none   |    from_app_tkeep_V    |    pointer   |
+|from_app_tlast_V        |  in |    1|    ap_none   |    from_app_tlast_V    |    pointer   |
+|from_app_tvalid_V       |  in |    1|    ap_none   |    from_app_tvalid_V   |    pointer   |
+|from_app_tready_V       | out |    1|    ap_none   |    from_app_tready_V   |    pointer   |
+|from_cmp_fifo_tdata_V   |  in |  512|    ap_none   |  from_cmp_fifo_tdata_V |    pointer   |
+|from_cmp_fifo_tkeep_V   |  in |   64|    ap_none   |  from_cmp_fifo_tkeep_V |    pointer   |
+|from_cmp_fifo_tlast_V   |  in |    1|    ap_none   |  from_cmp_fifo_tlast_V |    pointer   |
+|from_cmp_fifo_tvalid_V  |  in |    1|    ap_none   | from_cmp_fifo_tvalid_V |    pointer   |
+|from_cmp_fifo_tready_V  | out |    1|    ap_none   | from_cmp_fifo_tready_V |    pointer   |
+|time_cnt_V              |  in |   32|    ap_none   |       time_cnt_V       |    scalar    |
+|mismatch_V              | out |    1|    ap_none   |       mismatch_V       |    pointer   |
+|rx_timeElapse_V         | out |   32|    ap_none   |     rx_timeElapse_V    |    pointer   |
+|rx_timestamp_sum_V      | out |   64|    ap_none   |   rx_timestamp_sum_V   |    pointer   |
+|pkt_cnt_rx_V            | out |   32|    ap_none   |      pkt_cnt_rx_V      |    pointer   |
++------------------------+-----+-----+--------------+------------------------+--------------+
+

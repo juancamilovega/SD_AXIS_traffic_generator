@@ -1,0 +1,69 @@
+==============================================================
+Vivado(TM) HLS - High-Level Synthesis from C, C++ and SystemC v2019.1 (64-bit)
+Copyright 1986-2019 Xilinx, Inc. All Rights Reserved.
+==============================================================
+INFO: [HLS 200-10] Setting target device to 'xczu19eg-ffvc1760-2-i'
+INFO: [SYN 201-201] Setting up clock 'default' with a period of 4ns.
+INFO: [SCHED 204-61] Option 'relax_ii_for_timing' is enabled, will increase II to preserve clock frequency constraints.
+INFO: [HLS 200-10] Analyzing design file 'src/traffic_gen_tx.cpp' ... 
+INFO: [HLS 200-111] Finished Linking Time (s): cpu = 00:00:17 ; elapsed = 00:00:17 . Memory (MB): peak = 825.020 ; gain = 128.000 ; free physical = 57506 ; free virtual = 114668
+INFO: [HLS 200-111] Finished Checking Pragmas Time (s): cpu = 00:00:17 ; elapsed = 00:00:17 . Memory (MB): peak = 825.020 ; gain = 128.000 ; free physical = 57506 ; free virtual = 114668
+INFO: [HLS 200-10] Starting code transformations ...
+INFO: [HLS 200-111] Finished Standard Transforms Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 825.020 ; gain = 128.000 ; free physical = 57502 ; free virtual = 114664
+INFO: [HLS 200-10] Checking synthesizability ...
+INFO: [HLS 200-111] Finished Checking Synthesizability Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 825.020 ; gain = 128.000 ; free physical = 57500 ; free virtual = 114662
+WARNING: [XFORM 203-1103] Ignored data pack directive on non-struct variable 'to_app.tkeep.V' (src/traffic_gen_tx.cpp:4).
+WARNING: [XFORM 203-1103] Ignored data pack directive on non-struct variable 'to_cmp_fifo.tkeep.V' (src/traffic_gen_tx.cpp:5).
+INFO: [XFORM 203-401] Performing if-conversion on hyperblock from (src/traffic_gen_tx.cpp:45:24) to (src/traffic_gen_tx.cpp:57:6) in function 'traffic_gen_tx'... converting 11 basic blocks.
+INFO: [HLS 200-111] Finished Pre-synthesis Time (s): cpu = 00:00:19 ; elapsed = 00:00:19 . Memory (MB): peak = 825.020 ; gain = 128.000 ; free physical = 57480 ; free virtual = 114642
+INFO: [HLS 200-111] Finished Architecture Synthesis Time (s): cpu = 00:00:19 ; elapsed = 00:00:20 . Memory (MB): peak = 825.020 ; gain = 128.000 ; free physical = 57479 ; free virtual = 114640
+INFO: [HLS 200-10] Starting hardware synthesis ...
+INFO: [HLS 200-10] Synthesizing 'traffic_gen_tx' ...
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-42] -- Implementing module 'traffic_gen_tx' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [SCHED 204-11] Starting scheduling ...
+INFO: [SCHED 204-11] Finished scheduling.
+INFO: [HLS 200-111]  Elapsed time: 19.72 seconds; current allocated memory: 112.757 MB.
+INFO: [BIND 205-100] Starting micro-architecture generation ...
+INFO: [BIND 205-101] Performing variable lifetime analysis.
+INFO: [BIND 205-101] Exploring resource sharing.
+INFO: [BIND 205-101] Binding ...
+INFO: [BIND 205-100] Finished micro-architecture generation.
+INFO: [HLS 200-111]  Elapsed time: 0.03 seconds; current allocated memory: 113.140 MB.
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [HLS 200-10] -- Generating RTL for module 'traffic_gen_tx' 
+INFO: [HLS 200-10] ----------------------------------------------------------------
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/from_decoder_tdata_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/from_decoder_tkeep_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/from_decoder_tlast_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/from_decoder_tvalid_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/to_app_tdata_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'to_app_tdata_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/to_app_tkeep_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'to_app_tkeep_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/to_app_tlast_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'to_app_tlast_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/to_app_tvalid_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'to_app_tvalid_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/to_cmp_fifo_tdata_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'to_cmp_fifo_tdata_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/to_cmp_fifo_tkeep_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'to_cmp_fifo_tkeep_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/to_cmp_fifo_tlast_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'to_cmp_fifo_tlast_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/to_cmp_fifo_tvalid_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'to_cmp_fifo_tvalid_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/from_decoder_tready_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'from_decoder_tready_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/to_app_tready_V' to 'ap_none'.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/tx_timeElapse_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'tx_timeElapse_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/tx_timestamp_sum_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'tx_timestamp_sum_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/pkt_cnt_tx_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'pkt_cnt_tx_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on port 'traffic_gen_tx/time_cnt_V' to 'ap_none'.
+WARNING: [RTGEN 206-101] Port 'time_cnt_V' with mode 'ap_none' may require an associated data valid signal to correctly communicate with other blocks or a test bench; automatic C/RTL co-simulation may not be able to verify such a port.
+INFO: [RTGEN 206-500] Setting interface mode on function 'traffic_gen_tx' to 'ap_ctrl_none'.
+INFO: [RTGEN 206-100] 

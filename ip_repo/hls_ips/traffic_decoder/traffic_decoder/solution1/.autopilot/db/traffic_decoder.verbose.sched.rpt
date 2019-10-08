@@ -1,0 +1,212 @@
+
+
+================================================================
+== Vivado HLS Report for 'traffic_decoder'
+================================================================
+* Date:           Mon Oct  7 23:51:25 2019
+
+* Version:        2019.1 (Build 2552052 on Fri May 24 15:28:33 MDT 2019)
+* Project:        traffic_decoder
+* Solution:       solution1
+* Product family: zynquplus
+* Target device:  xczu19eg-ffvc1760-2-i
+
+
+================================================================
+== Performance Estimates
+================================================================
++ Timing (ns): 
+    * Summary: 
+    +--------+-------+----------+------------+
+    |  Clock | Target| Estimated| Uncertainty|
+    +--------+-------+----------+------------+
+    |ap_clk  |   4.00|     1.399|        0.50|
+    +--------+-------+----------+------------+
+
++ Latency (clock cycles): 
+    * Summary: 
+    +-----+-----+-----+-----+---------+
+    |  Latency  |  Interval | Pipeline|
+    | min | max | min | max |   Type  |
+    +-----+-----+-----+-----+---------+
+    |    0|    0|    0|    0|   none  |
+    +-----+-----+-----+-----+---------+
+
+    + Detail: 
+        * Instance: 
+        N/A
+
+        * Loop: 
+        N/A
+
+============================================================
++ Verbose Summary: Synthesis Manager
+============================================================
+InlineROM: 1
+ExposeGlobal: 0
+============================================================
++ Verbose Summary: CDFG Model
+============================================================
+IsTopModel: 1
+ResetActiveHigh: 1
+IsCombinational: 0
+IsDatapathOnly: 0
+HasWiredReturn: 1
+HasMFsm: 0
+HasVarLatency: 0
+IsPipeline: 0
+IsRtlPipelined: 0
+IsInstanceOverlapped: 0
+IsDontTouch: 0
+HasImplIP: 0
+IsGatedGlobalClock: 0
+
+
+============================================================
++ Verbose Summary: Schedule
+============================================================
+* Number of FSM states : 1
+* Pipeline : 0
+* Dataflow Pipeline: 0
+
+* FSM state transitions: 
+1 --> 
+
+* FSM state operations: 
+
+State 1 <SV = 0> <Delay = 1.39>
+ST_1 : Operation 2 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i64* %decoded_packet_tkeep_V), !map !72"   --->   Operation 2 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 3 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i512* %raw_packet_tdata_V), !map !393"   --->   Operation 3 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 4 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %raw_packet_tvalid_V), !map !399"   --->   Operation 4 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 5 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %raw_packet_tready_V), !map !403"   --->   Operation 5 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 6 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i512* %decoded_packet_tdata_V), !map !407"   --->   Operation 6 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 7 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %decoded_packet_tlast_V), !map !411"   --->   Operation 7 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 8 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %decoded_packet_tvalid_V), !map !415"   --->   Operation 8 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 9 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecBitsMap(i1* %decoded_packet_tready_V), !map !419"   --->   Operation 9 'specbitsmap' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 10 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecTopModule([16 x i8]* @traffic_decoder_str) nounwind"   --->   Operation 10 'spectopmodule' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 11 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i32 0, [13 x i8]* @p_str, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_decoder.cpp:6]   --->   Operation 11 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 12 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i512* %raw_packet_tdata_V, i1* %raw_packet_tvalid_V, i1* %raw_packet_tready_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind" [src/traffic_decoder.cpp:7]   --->   Operation 12 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 13 [1/1] (0.00ns)   --->   "call void (...)* @_ssdm_op_SpecInterface(i512* %decoded_packet_tdata_V, i64* %decoded_packet_tkeep_V, i1* %decoded_packet_tlast_V, i1* %decoded_packet_tvalid_V, i1* %decoded_packet_tready_V, [8 x i8]* @p_str2, i32 0, i32 0, [1 x i8]* @p_str1, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1, [1 x i8]* @p_str1, i32 0, i32 0, i32 0, i32 0, [1 x i8]* @p_str1, [1 x i8]* @p_str1) nounwind"   --->   Operation 13 'specinterface' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 14 [1/1] (0.00ns)   --->   "%rhs_V = call i1 @_ssdm_op_Read.ap_none.i1P(i1* %decoded_packet_tready_V)" [src/traffic_decoder.cpp:13]   --->   Operation 14 'read' 'rhs_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 15 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i1P(i1* %raw_packet_tready_V, i1 %rhs_V)" [src/traffic_decoder.cpp:13]   --->   Operation 15 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 16 [1/1] (0.00ns)   --->   "%raw_packet_tdata_V_r = call i512 @_ssdm_op_Read.ap_none.i512P(i512* %raw_packet_tdata_V)" [src/traffic_decoder.cpp:14]   --->   Operation 16 'read' 'raw_packet_tdata_V_r' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 17 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i512P(i512* %decoded_packet_tdata_V, i512 %raw_packet_tdata_V_r)" [src/traffic_decoder.cpp:14]   --->   Operation 17 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 18 [1/1] (0.00ns)   --->   "%p_Val2_s = load i512* @meta_V, align 16" [src/traffic_decoder.cpp:17]   --->   Operation 18 'load' 'p_Val2_s' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 19 [1/1] (0.00ns)   --->   "%p_Result_2 = call i7 @_ssdm_op_PartSelect.i7.i512.i32.i32(i512 %p_Val2_s, i32 505, i32 511)" [src/traffic_decoder.cpp:17]   --->   Operation 19 'partselect' 'p_Result_2' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 20 [1/1] (0.00ns)   --->   "%tmp_1 = call i1 @_ssdm_op_BitSelect.i1.i512.i32(i512 %p_Val2_s, i32 511)" [src/traffic_decoder.cpp:17]   --->   Operation 20 'bitselect' 'tmp_1' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 21 [1/1] (0.81ns)   --->   "%icmp_ln895 = icmp ugt i7 %p_Result_2, 62" [src/traffic_decoder.cpp:17]   --->   Operation 21 'icmp' 'icmp_ln895' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 22 [1/1] (0.81ns)   --->   "%icmp_ln895_1 = icmp ugt i7 %p_Result_2, 61" [src/traffic_decoder.cpp:17]   --->   Operation 22 'icmp' 'icmp_ln895_1' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 23 [1/1] (0.81ns)   --->   "%icmp_ln895_2 = icmp ugt i7 %p_Result_2, 60" [src/traffic_decoder.cpp:17]   --->   Operation 23 'icmp' 'icmp_ln895_2' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 24 [1/1] (0.81ns)   --->   "%icmp_ln895_3 = icmp ugt i7 %p_Result_2, 59" [src/traffic_decoder.cpp:17]   --->   Operation 24 'icmp' 'icmp_ln895_3' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 25 [1/1] (0.81ns)   --->   "%icmp_ln895_4 = icmp ugt i7 %p_Result_2, 58" [src/traffic_decoder.cpp:17]   --->   Operation 25 'icmp' 'icmp_ln895_4' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 26 [1/1] (0.81ns)   --->   "%icmp_ln895_5 = icmp ugt i7 %p_Result_2, 57" [src/traffic_decoder.cpp:17]   --->   Operation 26 'icmp' 'icmp_ln895_5' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 27 [1/1] (0.81ns)   --->   "%icmp_ln895_6 = icmp ugt i7 %p_Result_2, 56" [src/traffic_decoder.cpp:17]   --->   Operation 27 'icmp' 'icmp_ln895_6' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 28 [1/1] (0.81ns)   --->   "%icmp_ln895_7 = icmp ugt i7 %p_Result_2, 55" [src/traffic_decoder.cpp:17]   --->   Operation 28 'icmp' 'icmp_ln895_7' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 29 [1/1] (0.81ns)   --->   "%icmp_ln895_8 = icmp ugt i7 %p_Result_2, 54" [src/traffic_decoder.cpp:17]   --->   Operation 29 'icmp' 'icmp_ln895_8' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 30 [1/1] (0.81ns)   --->   "%icmp_ln895_9 = icmp ugt i7 %p_Result_2, 53" [src/traffic_decoder.cpp:17]   --->   Operation 30 'icmp' 'icmp_ln895_9' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 31 [1/1] (0.81ns)   --->   "%icmp_ln895_10 = icmp ugt i7 %p_Result_2, 52" [src/traffic_decoder.cpp:17]   --->   Operation 31 'icmp' 'icmp_ln895_10' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 32 [1/1] (0.81ns)   --->   "%icmp_ln895_11 = icmp ugt i7 %p_Result_2, 51" [src/traffic_decoder.cpp:17]   --->   Operation 32 'icmp' 'icmp_ln895_11' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 33 [1/1] (0.81ns)   --->   "%icmp_ln895_12 = icmp ugt i7 %p_Result_2, 50" [src/traffic_decoder.cpp:17]   --->   Operation 33 'icmp' 'icmp_ln895_12' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 34 [1/1] (0.81ns)   --->   "%icmp_ln895_13 = icmp ugt i7 %p_Result_2, 49" [src/traffic_decoder.cpp:17]   --->   Operation 34 'icmp' 'icmp_ln895_13' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 35 [1/1] (0.81ns)   --->   "%icmp_ln895_14 = icmp ugt i7 %p_Result_2, 48" [src/traffic_decoder.cpp:17]   --->   Operation 35 'icmp' 'icmp_ln895_14' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 36 [1/1] (0.81ns)   --->   "%icmp_ln895_15 = icmp ugt i7 %p_Result_2, 47" [src/traffic_decoder.cpp:17]   --->   Operation 36 'icmp' 'icmp_ln895_15' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 37 [1/1] (0.81ns)   --->   "%icmp_ln895_16 = icmp ugt i7 %p_Result_2, 46" [src/traffic_decoder.cpp:17]   --->   Operation 37 'icmp' 'icmp_ln895_16' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 38 [1/1] (0.81ns)   --->   "%icmp_ln895_17 = icmp ugt i7 %p_Result_2, 45" [src/traffic_decoder.cpp:17]   --->   Operation 38 'icmp' 'icmp_ln895_17' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 39 [1/1] (0.81ns)   --->   "%icmp_ln895_18 = icmp ugt i7 %p_Result_2, 44" [src/traffic_decoder.cpp:17]   --->   Operation 39 'icmp' 'icmp_ln895_18' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 40 [1/1] (0.81ns)   --->   "%icmp_ln895_19 = icmp ugt i7 %p_Result_2, 43" [src/traffic_decoder.cpp:17]   --->   Operation 40 'icmp' 'icmp_ln895_19' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 41 [1/1] (0.81ns)   --->   "%icmp_ln895_20 = icmp ugt i7 %p_Result_2, 42" [src/traffic_decoder.cpp:17]   --->   Operation 41 'icmp' 'icmp_ln895_20' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 42 [1/1] (0.81ns)   --->   "%icmp_ln895_21 = icmp ugt i7 %p_Result_2, 41" [src/traffic_decoder.cpp:17]   --->   Operation 42 'icmp' 'icmp_ln895_21' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 43 [1/1] (0.81ns)   --->   "%icmp_ln895_22 = icmp ugt i7 %p_Result_2, 40" [src/traffic_decoder.cpp:17]   --->   Operation 43 'icmp' 'icmp_ln895_22' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 44 [1/1] (0.81ns)   --->   "%icmp_ln895_23 = icmp ugt i7 %p_Result_2, 39" [src/traffic_decoder.cpp:17]   --->   Operation 44 'icmp' 'icmp_ln895_23' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 45 [1/1] (0.81ns)   --->   "%icmp_ln895_24 = icmp ugt i7 %p_Result_2, 38" [src/traffic_decoder.cpp:17]   --->   Operation 45 'icmp' 'icmp_ln895_24' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 46 [1/1] (0.81ns)   --->   "%icmp_ln895_25 = icmp ugt i7 %p_Result_2, 37" [src/traffic_decoder.cpp:17]   --->   Operation 46 'icmp' 'icmp_ln895_25' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 47 [1/1] (0.81ns)   --->   "%icmp_ln895_26 = icmp ugt i7 %p_Result_2, 36" [src/traffic_decoder.cpp:17]   --->   Operation 47 'icmp' 'icmp_ln895_26' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 48 [1/1] (0.81ns)   --->   "%icmp_ln895_27 = icmp ugt i7 %p_Result_2, 35" [src/traffic_decoder.cpp:17]   --->   Operation 48 'icmp' 'icmp_ln895_27' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 49 [1/1] (0.81ns)   --->   "%icmp_ln895_28 = icmp ugt i7 %p_Result_2, 34" [src/traffic_decoder.cpp:17]   --->   Operation 49 'icmp' 'icmp_ln895_28' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 50 [1/1] (0.81ns)   --->   "%icmp_ln895_29 = icmp ugt i7 %p_Result_2, 33" [src/traffic_decoder.cpp:17]   --->   Operation 50 'icmp' 'icmp_ln895_29' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 51 [1/1] (0.81ns)   --->   "%icmp_ln895_30 = icmp ugt i7 %p_Result_2, 32" [src/traffic_decoder.cpp:17]   --->   Operation 51 'icmp' 'icmp_ln895_30' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 52 [1/1] (0.00ns)   --->   "%tmp_2 = call i2 @_ssdm_op_PartSelect.i2.i512.i32.i32(i512 %p_Val2_s, i32 510, i32 511)" [src/traffic_decoder.cpp:17]   --->   Operation 52 'partselect' 'tmp_2' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 53 [1/1] (0.44ns)   --->   "%icmp_ln895_31 = icmp ne i2 %tmp_2, 0" [src/traffic_decoder.cpp:17]   --->   Operation 53 'icmp' 'icmp_ln895_31' <Predicate = true> <Delay = 0.44> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 54 [1/1] (0.81ns)   --->   "%icmp_ln895_32 = icmp ugt i7 %p_Result_2, 30" [src/traffic_decoder.cpp:17]   --->   Operation 54 'icmp' 'icmp_ln895_32' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 55 [1/1] (0.81ns)   --->   "%icmp_ln895_33 = icmp ugt i7 %p_Result_2, 29" [src/traffic_decoder.cpp:17]   --->   Operation 55 'icmp' 'icmp_ln895_33' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 56 [1/1] (0.81ns)   --->   "%icmp_ln895_34 = icmp ugt i7 %p_Result_2, 28" [src/traffic_decoder.cpp:17]   --->   Operation 56 'icmp' 'icmp_ln895_34' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 57 [1/1] (0.81ns)   --->   "%icmp_ln895_35 = icmp ugt i7 %p_Result_2, 27" [src/traffic_decoder.cpp:17]   --->   Operation 57 'icmp' 'icmp_ln895_35' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 58 [1/1] (0.81ns)   --->   "%icmp_ln895_36 = icmp ugt i7 %p_Result_2, 26" [src/traffic_decoder.cpp:17]   --->   Operation 58 'icmp' 'icmp_ln895_36' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 59 [1/1] (0.81ns)   --->   "%icmp_ln895_37 = icmp ugt i7 %p_Result_2, 25" [src/traffic_decoder.cpp:17]   --->   Operation 59 'icmp' 'icmp_ln895_37' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 60 [1/1] (0.81ns)   --->   "%icmp_ln895_38 = icmp ugt i7 %p_Result_2, 24" [src/traffic_decoder.cpp:17]   --->   Operation 60 'icmp' 'icmp_ln895_38' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 61 [1/1] (0.81ns)   --->   "%icmp_ln895_39 = icmp ugt i7 %p_Result_2, 23" [src/traffic_decoder.cpp:17]   --->   Operation 61 'icmp' 'icmp_ln895_39' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 62 [1/1] (0.81ns)   --->   "%icmp_ln895_40 = icmp ugt i7 %p_Result_2, 22" [src/traffic_decoder.cpp:17]   --->   Operation 62 'icmp' 'icmp_ln895_40' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 63 [1/1] (0.81ns)   --->   "%icmp_ln895_41 = icmp ugt i7 %p_Result_2, 21" [src/traffic_decoder.cpp:17]   --->   Operation 63 'icmp' 'icmp_ln895_41' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 64 [1/1] (0.81ns)   --->   "%icmp_ln895_42 = icmp ugt i7 %p_Result_2, 20" [src/traffic_decoder.cpp:17]   --->   Operation 64 'icmp' 'icmp_ln895_42' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 65 [1/1] (0.81ns)   --->   "%icmp_ln895_43 = icmp ugt i7 %p_Result_2, 19" [src/traffic_decoder.cpp:17]   --->   Operation 65 'icmp' 'icmp_ln895_43' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 66 [1/1] (0.81ns)   --->   "%icmp_ln895_44 = icmp ugt i7 %p_Result_2, 18" [src/traffic_decoder.cpp:17]   --->   Operation 66 'icmp' 'icmp_ln895_44' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 67 [1/1] (0.81ns)   --->   "%icmp_ln895_45 = icmp ugt i7 %p_Result_2, 17" [src/traffic_decoder.cpp:17]   --->   Operation 67 'icmp' 'icmp_ln895_45' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 68 [1/1] (0.81ns)   --->   "%icmp_ln895_46 = icmp ugt i7 %p_Result_2, 16" [src/traffic_decoder.cpp:17]   --->   Operation 68 'icmp' 'icmp_ln895_46' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 69 [1/1] (0.00ns)   --->   "%tmp_3 = call i3 @_ssdm_op_PartSelect.i3.i512.i32.i32(i512 %p_Val2_s, i32 509, i32 511)" [src/traffic_decoder.cpp:17]   --->   Operation 69 'partselect' 'tmp_3' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 70 [1/1] (0.58ns)   --->   "%icmp_ln895_47 = icmp ne i3 %tmp_3, 0" [src/traffic_decoder.cpp:17]   --->   Operation 70 'icmp' 'icmp_ln895_47' <Predicate = true> <Delay = 0.58> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 71 [1/1] (0.81ns)   --->   "%icmp_ln895_48 = icmp ugt i7 %p_Result_2, 14" [src/traffic_decoder.cpp:17]   --->   Operation 71 'icmp' 'icmp_ln895_48' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 72 [1/1] (0.81ns)   --->   "%icmp_ln895_49 = icmp ugt i7 %p_Result_2, 13" [src/traffic_decoder.cpp:17]   --->   Operation 72 'icmp' 'icmp_ln895_49' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 73 [1/1] (0.81ns)   --->   "%icmp_ln895_50 = icmp ugt i7 %p_Result_2, 12" [src/traffic_decoder.cpp:17]   --->   Operation 73 'icmp' 'icmp_ln895_50' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 74 [1/1] (0.81ns)   --->   "%icmp_ln895_51 = icmp ugt i7 %p_Result_2, 11" [src/traffic_decoder.cpp:17]   --->   Operation 74 'icmp' 'icmp_ln895_51' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 75 [1/1] (0.81ns)   --->   "%icmp_ln895_52 = icmp ugt i7 %p_Result_2, 10" [src/traffic_decoder.cpp:17]   --->   Operation 75 'icmp' 'icmp_ln895_52' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 76 [1/1] (0.81ns)   --->   "%icmp_ln895_53 = icmp ugt i7 %p_Result_2, 9" [src/traffic_decoder.cpp:17]   --->   Operation 76 'icmp' 'icmp_ln895_53' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 77 [1/1] (0.81ns)   --->   "%icmp_ln895_54 = icmp ugt i7 %p_Result_2, 8" [src/traffic_decoder.cpp:17]   --->   Operation 77 'icmp' 'icmp_ln895_54' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 78 [1/1] (0.00ns)   --->   "%tmp_4 = call i4 @_ssdm_op_PartSelect.i4.i512.i32.i32(i512 %p_Val2_s, i32 508, i32 511)" [src/traffic_decoder.cpp:17]   --->   Operation 78 'partselect' 'tmp_4' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 79 [1/1] (0.72ns)   --->   "%icmp_ln895_55 = icmp ne i4 %tmp_4, 0" [src/traffic_decoder.cpp:17]   --->   Operation 79 'icmp' 'icmp_ln895_55' <Predicate = true> <Delay = 0.72> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 80 [1/1] (0.81ns)   --->   "%icmp_ln895_56 = icmp ugt i7 %p_Result_2, 6" [src/traffic_decoder.cpp:17]   --->   Operation 80 'icmp' 'icmp_ln895_56' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 81 [1/1] (0.81ns)   --->   "%icmp_ln895_57 = icmp ugt i7 %p_Result_2, 5" [src/traffic_decoder.cpp:17]   --->   Operation 81 'icmp' 'icmp_ln895_57' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 82 [1/1] (0.81ns)   --->   "%icmp_ln895_58 = icmp ugt i7 %p_Result_2, 4" [src/traffic_decoder.cpp:17]   --->   Operation 82 'icmp' 'icmp_ln895_58' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 83 [1/1] (0.00ns)   --->   "%tmp_5 = call i5 @_ssdm_op_PartSelect.i5.i512.i32.i32(i512 %p_Val2_s, i32 507, i32 511)" [src/traffic_decoder.cpp:17]   --->   Operation 83 'partselect' 'tmp_5' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 84 [1/1] (0.75ns)   --->   "%icmp_ln895_59 = icmp ne i5 %tmp_5, 0" [src/traffic_decoder.cpp:17]   --->   Operation 84 'icmp' 'icmp_ln895_59' <Predicate = true> <Delay = 0.75> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 85 [1/1] (0.81ns)   --->   "%icmp_ln895_60 = icmp ugt i7 %p_Result_2, 2" [src/traffic_decoder.cpp:17]   --->   Operation 85 'icmp' 'icmp_ln895_60' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 86 [1/1] (0.00ns)   --->   "%tmp_6 = call i6 @_ssdm_op_PartSelect.i6.i512.i32.i32(i512 %p_Val2_s, i32 506, i32 511)" [src/traffic_decoder.cpp:17]   --->   Operation 86 'partselect' 'tmp_6' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 87 [1/1] (0.78ns)   --->   "%icmp_ln895_61 = icmp ne i6 %tmp_6, 0" [src/traffic_decoder.cpp:17]   --->   Operation 87 'icmp' 'icmp_ln895_61' <Predicate = true> <Delay = 0.78> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 88 [1/1] (0.81ns)   --->   "%icmp_ln17 = icmp ne i7 %p_Result_2, 0" [src/traffic_decoder.cpp:17]   --->   Operation 88 'icmp' 'icmp_ln17' <Predicate = true> <Delay = 0.81> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 89 [1/1] (0.00ns)   --->   "%tmp = call i64 @_ssdm_op_BitConcatenate.i64.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1.i1(i1 %icmp_ln17, i1 %icmp_ln895_61, i1 %icmp_ln895_60, i1 %icmp_ln895_59, i1 %icmp_ln895_58, i1 %icmp_ln895_57, i1 %icmp_ln895_56, i1 %icmp_ln895_55, i1 %icmp_ln895_54, i1 %icmp_ln895_53, i1 %icmp_ln895_52, i1 %icmp_ln895_51, i1 %icmp_ln895_50, i1 %icmp_ln895_49, i1 %icmp_ln895_48, i1 %icmp_ln895_47, i1 %icmp_ln895_46, i1 %icmp_ln895_45, i1 %icmp_ln895_44, i1 %icmp_ln895_43, i1 %icmp_ln895_42, i1 %icmp_ln895_41, i1 %icmp_ln895_40, i1 %icmp_ln895_39, i1 %icmp_ln895_38, i1 %icmp_ln895_37, i1 %icmp_ln895_36, i1 %icmp_ln895_35, i1 %icmp_ln895_34, i1 %icmp_ln895_33, i1 %icmp_ln895_32, i1 %icmp_ln895_31, i1 %icmp_ln895_30, i1 %icmp_ln895_29, i1 %icmp_ln895_28, i1 %icmp_ln895_27, i1 %icmp_ln895_26, i1 %icmp_ln895_25, i1 %icmp_ln895_24, i1 %icmp_ln895_23, i1 %icmp_ln895_22, i1 %icmp_ln895_21, i1 %icmp_ln895_20, i1 %icmp_ln895_19, i1 %icmp_ln895_18, i1 %icmp_ln895_17, i1 %icmp_ln895_16, i1 %icmp_ln895_15, i1 %icmp_ln895_14, i1 %icmp_ln895_13, i1 %icmp_ln895_12, i1 %icmp_ln895_11, i1 %icmp_ln895_10, i1 %icmp_ln895_9, i1 %icmp_ln895_8, i1 %icmp_ln895_7, i1 %icmp_ln895_6, i1 %icmp_ln895_5, i1 %icmp_ln895_4, i1 %icmp_ln895_3, i1 %icmp_ln895_2, i1 %icmp_ln895_1, i1 %icmp_ln895, i1 %tmp_1)" [src/traffic_decoder.cpp:17]   --->   Operation 89 'bitconcatenate' 'tmp' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 90 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i64P(i64* %decoded_packet_tkeep_V, i64 %tmp)" [src/traffic_decoder.cpp:17]   --->   Operation 90 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 91 [1/1] (0.00ns)   --->   "%p_Result_s = call i1 @_ssdm_op_BitSelect.i1.i512.i32(i512 %p_Val2_s, i32 504)" [src/traffic_decoder.cpp:19]   --->   Operation 91 'bitselect' 'p_Result_s' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 92 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i1P(i1* %decoded_packet_tlast_V, i1 %p_Result_s)" [src/traffic_decoder.cpp:19]   --->   Operation 92 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 93 [1/1] (0.00ns)   --->   "%lhs_V = call i1 @_ssdm_op_Read.ap_none.i1P(i1* %raw_packet_tvalid_V)" [src/traffic_decoder.cpp:20]   --->   Operation 93 'read' 'lhs_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 94 [1/1] (0.00ns)   --->   "%t_V = load i6* @meta_count_V, align 1" [src/traffic_decoder.cpp:20]   --->   Operation 94 'load' 't_V' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 95 [1/1] (0.78ns)   --->   "%icmp_ln883 = icmp ne i6 %t_V, 0" [src/traffic_decoder.cpp:20]   --->   Operation 95 'icmp' 'icmp_ln883' <Predicate = true> <Delay = 0.78> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 96 [1/1] (0.28ns)   --->   "%and_ln20 = and i1 %lhs_V, %icmp_ln883" [src/traffic_decoder.cpp:20]   --->   Operation 96 'and' 'and_ln20' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 97 [1/1] (0.00ns)   --->   "call void @_ssdm_op_Write.ap_none.i1P(i1* %decoded_packet_tvalid_V, i1 %and_ln20)"   --->   Operation 97 'write' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 98 [1/1] (0.28ns)   --->   "%ret_V = and i1 %lhs_V, %rhs_V" [src/traffic_decoder.cpp:22]   --->   Operation 98 'and' 'ret_V' <Predicate = true> <Delay = 0.28> <Core = "LogicGate">   --->   Core 27 'LogicGate' <Latency = 0> <II = 1> <Delay = 0.28> <FuncUnit> <Opcode : 'and' 'or' 'xor'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 99 [1/1] (0.00ns)   --->   "br i1 %ret_V, label %0, label %._crit_edge140" [src/traffic_decoder.cpp:22]   --->   Operation 99 'br' <Predicate = true> <Delay = 0.00>
+ST_1 : Operation 100 [1/1] (0.78ns)   --->   "%icmp_ln879 = icmp eq i6 %t_V, 0" [src/traffic_decoder.cpp:23]   --->   Operation 100 'icmp' 'icmp_ln879' <Predicate = (ret_V)> <Delay = 0.78> <Core = "Cmp">   --->   Core 25 'Cmp' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'icmp'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 101 [1/1] (0.00ns) (grouped into LUT with out node r_V_1)   --->   "%r_V = shl i512 %p_Val2_s, 8" [src/traffic_decoder.cpp:24]   --->   Operation 101 'shl' 'r_V' <Predicate = (ret_V & !icmp_ln879)> <Delay = 0.00>
+ST_1 : Operation 102 [1/1] (0.61ns) (out node of the LUT)   --->   "%r_V_1 = select i1 %icmp_ln879, i512 %raw_packet_tdata_V_r, i512 %r_V" [src/traffic_decoder.cpp:23]   --->   Operation 102 'select' 'r_V_1' <Predicate = (ret_V)> <Delay = 0.61> <Core = "Sel">   --->   Core 26 'Sel' <Latency = 0> <II = 1> <Delay = 0.61> <FuncUnit> <Opcode : 'select'> <InPorts = 3> <OutPorts = 1>
+ST_1 : Operation 103 [1/1] (0.00ns)   --->   "store i512 %r_V_1, i512* @meta_V, align 64" [src/traffic_decoder.cpp:23]   --->   Operation 103 'store' <Predicate = (ret_V)> <Delay = 0.00>
+ST_1 : Operation 104 [1/1] (0.78ns)   --->   "%add_ln700 = add i6 1, %t_V" [src/traffic_decoder.cpp:25]   --->   Operation 104 'add' 'add_ln700' <Predicate = (ret_V)> <Delay = 0.78> <Core = "AddSub">   --->   Core 14 'AddSub' <Latency = 0> <II = 1> <Delay = 0.78> <FuncUnit> <Opcode : 'add' 'sub'> <InPorts = 2> <OutPorts = 1>
+ST_1 : Operation 105 [1/1] (0.00ns)   --->   "store i6 %add_ln700, i6* @meta_count_V, align 1" [src/traffic_decoder.cpp:25]   --->   Operation 105 'store' <Predicate = (ret_V)> <Delay = 0.00>
+ST_1 : Operation 106 [1/1] (0.00ns)   --->   "br label %._crit_edge140" [src/traffic_decoder.cpp:26]   --->   Operation 106 'br' <Predicate = (ret_V)> <Delay = 0.00>
+ST_1 : Operation 107 [1/1] (0.00ns)   --->   "ret void" [src/traffic_decoder.cpp:27]   --->   Operation 107 'ret' <Predicate = true> <Delay = 0.00>
+
+
+============================================================
++ Verbose Summary: Timing violations
+============================================================
+Target clock period: 4ns, clock uncertainty: 0.5ns.
+
+ <State 1>: 1.4ns
+The critical path consists of the following:
+	'load' operation ('t.V', src/traffic_decoder.cpp:20) on static variable 'meta_count_V' [103]  (0 ns)
+	'icmp' operation ('icmp_ln879', src/traffic_decoder.cpp:23) [110]  (0.785 ns)
+	'select' operation ('r.V', src/traffic_decoder.cpp:23) [112]  (0.614 ns)
+
+
+============================================================
++ Verbose Summary: Binding
+============================================================
+N/A
+* FSMD analyzer results:
+  - Output states:
+ - Input state : 
+  - Chain level:
+	State 1
+
+
+============================================================
++ Verbose Summary: Datapath Resource usage 
+============================================================
+N/A
