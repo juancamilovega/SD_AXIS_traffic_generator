@@ -5,6 +5,7 @@ const ap_uint<9> TYPE = 1;
 #define TRANS_LIMITE 4*1024*1024 //4M bytes
 void datamover_controller(
 	ap_uint<1> start,
+	ap_uint<64> offset,
 	ap_uint<64> length,
 	AXIS & m_axis,
 	ap_uint<1> m_axis_tready
@@ -23,7 +24,7 @@ void datamover_controller(
 	m_axis = m_axis_reg;
 	if (!start_reg & start) {
 		core_on = 1;
-		curr_addr = 0;
+		curr_addr = offset;
 		length_reg = length;
 	} else if (!core_on) {
 		m_axis_reg.tdata = 0;

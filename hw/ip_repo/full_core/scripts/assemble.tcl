@@ -38,6 +38,9 @@ make_bd_intf_pins_external  [get_bd_intf_pins traffic_gen_tx/to_app]
 make_bd_intf_pins_external  [get_bd_intf_pins axi_datamover/M_AXI_MM2S]
 make_bd_intf_pins_external  [get_bd_intf_pins traffic_gen_tx/to_cmp_fifo]
 make_bd_pins_external  [get_bd_pins sw_interface/rst]
+# Added for datamover offset
+make_bd_pins_external  [get_bd_pins sw_interface/datmvctl_offset]
+
 set_property name rst_out [get_bd_ports rst_0]
 foreach port [get_bd_ports *_0] {
         set_property name [regsub "_0" [regsub "/" $port ""] ""] $port
@@ -76,6 +79,8 @@ connect_bd_net [get_bd_pins traffic_gen_tx/tx_timeElapse] [get_bd_pins sw_interf
 connect_bd_net [get_bd_pins traffic_gen_tx/tx_timestamp_sum] [get_bd_pins sw_interface/tx_timestamp_sum]
 connect_bd_net [get_bd_pins traffic_gen_tx/pkt_cnt_tx] [get_bd_pins sw_interface/pkt_cnt_tx]
 connect_bd_net [get_bd_pins proc_sys_reset/ext_reset_in] [get_bd_pins sw_interface/rst]
+# Added line for datamover offset
+connect_bd_net [get_bd_pins sw_interface/datmvctl_offset] [get_bd_pins datamover_controller/offset]
 
 assign_bd_address
 set_property offset 0x0000000000000000 [get_bd_addr_segs {axi_datamover/Data_MM2S/SEG_to_ddr_Reg}]
