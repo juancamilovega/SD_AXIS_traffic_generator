@@ -54,7 +54,7 @@ int file_to_mem_ps(const char* inFilePath, u64 & total_size, u64 & actual_size, 
 		goto file_to_mem_cleanup;
 	}
 	
-	#define FPGA_DDR_BASE 0x4000000000
+	#define FPGA_DDR_BASE 0x400000000
 	
 	cout << "reading file into FPGA memory ..." << endl;
 	
