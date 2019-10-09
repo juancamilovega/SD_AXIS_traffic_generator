@@ -41,7 +41,7 @@ int do_test(u64 mem_size, u32 actual_size, u32 packet_num, u32 iter_num) {
 	double rx_timeElapse = 0;
 	double latency;
 	cout << "launch the hardware test, sending " << (double)actual_size/1024/1024*8*iter_num << " Mbit data"<< endl;
-	for (int i = 0; i < iter_num; i++) {
+	for (u32 i = 0; i < iter_num; i++) {
 	//reset the core
 		write_int(map_base, START, 0); //clear start bit
 		write_int(map_base, RST, 1); //set rst to 1

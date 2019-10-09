@@ -1,5 +1,5 @@
 CC = g++
-C_FLAGS = -std=c++0x
+C_FLAGS = -Wall -fno-diagnostics-show-caret -std=c++0x
 HEADERS = -I include
 OUTDIR = output
 TMPDIR = tmp

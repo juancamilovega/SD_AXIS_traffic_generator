@@ -34,7 +34,7 @@ void csv_row::readNextRow(istream& str) {
 int csv_row::write_meta(unsigned char & meta) {
 	unsigned char mty = 0;
 	unsigned char last = stoi(m_data[4],0,16);
-	for (int i = 2; i < m_data[3].length(); i++) {
+	for (int i = 2; i < int(m_data[3].length()); i++) {
 		switch(stoi(m_data[3].substr(i,1),0,16)) {
 			case 0b1111:
 				mty += 4;
@@ -56,7 +56,7 @@ int csv_row::write_meta(unsigned char & meta) {
 
 void csv_row::write_data(unsigned char data[64]) {
 	int index = 63;
-	for (int i = 2; i < m_data[2].length(); i+=2) {
+	for (int i = 2; i < int(m_data[2].length()); i+=2) {
 		data[index] = stoi(m_data[2].substr(i,2),0,16);
 		index--;
 	}
