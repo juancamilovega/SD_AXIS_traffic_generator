@@ -1,2 +1,2 @@
-# AXIS_traffic_generator
+# SD_AXIS_traffic_generator
 Software defined cycle accurate AXI Stream traffic generator
