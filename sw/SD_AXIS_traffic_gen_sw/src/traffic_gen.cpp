@@ -27,7 +27,7 @@ int main(int argc, char** argv) {
 	
 	int opt;
 	opterr = 0;
-	while ((opt = getopt(argc, argv, "ho:a:n:")) != -1) {
+	while ((opt = getopt(argc, argv, "ho:a:n:p:")) != -1) {
 		switch(opt) {
 			case 'h':
 				print_usage();
