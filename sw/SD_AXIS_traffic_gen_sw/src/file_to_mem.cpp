@@ -21,7 +21,7 @@ typedef uint64_t u64;
 typedef uint32_t u32;
 using namespace std;
 
-int file_to_mem_ps(const char* inFilePath, u64 & total_size, u64 & actual_size, u32 & packet_num) {
+int file_to_mem_ps(const char* inFilePath, void *const ddr_base, u64 & total_size, u64 & actual_size, u32 & packet_num) {
 	//A csv_row is essentially a vector of strings
 	csv_row row;
 	u32 remain_sz;
@@ -54,8 +54,6 @@ int file_to_mem_ps(const char* inFilePath, u64 & total_size, u64 & actual_size, 
 		goto file_to_mem_cleanup;
 	}
 	
-	#define FPGA_DDR_BASE 0x400000000
-	
 	cout << "reading file into FPGA memory ..." << endl;
 	
 	inFile.seekg(0, inFile.beg); //rewind the file
@@ -66,7 +64,7 @@ int file_to_mem_ps(const char* inFilePath, u64 & total_size, u64 & actual_size, 
 	
 	actual_size = 0; //Needed?
 	while (1) {
-		map_base = mmap(0, RW_MAX_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fpga_ram_fd, FPGA_DDR_BASE + offset);
+		map_base = mmap(0, RW_MAX_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fpga_ram_fd, ddr_base + offset);
 		
 		if (map_base == MAP_FAILED) {
 			perror("Could not map FPGA DDR memory");
