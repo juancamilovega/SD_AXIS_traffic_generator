@@ -26,27 +26,16 @@ uint32_t read_int(volatile void* map_base, int offset)
   return (*((uint32_t *) virt_addr));
 }
 
-int do_test_ps (u64 mem_size, void *const base_addr, u32 actual_size, u32 packet_num, u32 iter_num) {
+int do_test_ps (u64 mem_size, void *const base_addr, void *const ddr_offset, u32 actual_size, u32 packet_num, u32 iter_num) {
 	const char * ctrl_device = "/dev/mem";
 	int ctrl_fd = -1;
 	void* map_base = MAP_FAILED;
 	int ret = 0;
 	
-	ctrl_fd = open(ctrl_device, O_RDWR | O_SYNC);
-	if (ctrl_fd < 0) {
-		strerror("Could not open /dev/mem");
-		ret = -1;
-		goto do_test_ps_cleanup;
-	}
-	map_base = mmap(0, 0x10000, PROT_READ | PROT_WRITE, MAP_SHARED, ctrl_fd, base_addr);
-	if (map_base == MAP_FAILED) {
-		strerror("Could not mmap device memory");
-		ret = -1;
-		goto do_test_ps_cleanup;
-	}
-	
 	u32 mem_size_low = mem_size & 0xFFFFFFFF;
 	u32 mem_size_high = (mem_size >> 32) & 0xFFFFFFFF;
+	u32 ddr_offset_low = (u64)ddr_offset & 0xFFFFFFFF;
+	u32 ddr_offset_high = ((u64)ddr_offset >> 32) & 0xFFFFFFFF;
 //timeout counter
 	u32 timeout_cnt;
 //stats registers
@@ -55,6 +44,21 @@ int do_test_ps (u64 mem_size, void *const base_addr, u32 actual_size, u32 packet
 	double tx_timeElapse = 0;
 	double rx_timeElapse = 0;
 	double latency;
+	
+	//Open all the device files and do memory mapping
+	ctrl_fd = open(ctrl_device, O_RDWR | O_SYNC);
+	if (ctrl_fd < 0) {
+		perror("Could not open /dev/mem");
+		ret = -1;
+		goto do_test_ps_cleanup;
+	}
+	map_base = mmap(0, 0x10000, PROT_READ | PROT_WRITE, MAP_SHARED, ctrl_fd, (u64 const) base_addr);
+	if (map_base == MAP_FAILED) {
+		perror("Could not mmap device memory");
+		ret = -1;
+		goto do_test_ps_cleanup;
+	}
+	
 	cout << "launch the hardware test, sending " << (double)actual_size/1024/1024*8*iter_num << " Mbit data"<< endl;
 	for (u32 i = 0; i < iter_num; i++) {
 	//reset the core
@@ -64,6 +68,8 @@ int do_test_ps (u64 mem_size, void *const base_addr, u32 actual_size, u32 packet
 	//control the datamover controller
 		write_int(map_base, LEN_LOW, mem_size_low);
 		write_int(map_base, LEN_HIGH, mem_size_high);
+		write_int(map_base, DDR_OFFSET_LOW, ddr_offset_low);
+		write_int(map_base, DDR_OFFSET_HIGH, ddr_offset_high);
 		usleep(1000);
 		write_int(map_base, START, 1); //set start to 1
 	//check the status
@@ -108,12 +114,14 @@ int do_test_ps (u64 mem_size, void *const base_addr, u32 actual_size, u32 packet
 	return ret;
 }
 
-int do_test(u64 mem_size, void *const base_addr, u32 actual_size, u32 packet_num, u32 iter_num) {
+int do_test(u64 mem_size, void *const base_addr, void *const ddr_offset, u32 actual_size, u32 packet_num, u32 iter_num) {
 	const char * ctrl_device = "/dev/xdma0_user";
 	int ctrl_fd =  open(ctrl_device, O_RDWR | O_SYNC);
-	void* map_base = mmap(0, 0x10000, PROT_READ | PROT_WRITE, MAP_SHARED, ctrl_fd, base_addr);	
+	void* map_base = mmap(0, 0x10000, PROT_READ | PROT_WRITE, MAP_SHARED, ctrl_fd, (u64 const) base_addr);	
 	u32 mem_size_low = mem_size & 0xFFFFFFFF;
 	u32 mem_size_high = (mem_size >> 32) & 0xFFFFFFFF;
+	u32 ddr_offset_low = (u64)ddr_offset & 0xFFFFFFFF;
+	u32 ddr_offset_high = ((u64)ddr_offset >> 32) & 0xFFFFFFFF;
 //timeout counter
 	u32 timeout_cnt;
 //stats registers
@@ -131,8 +139,11 @@ int do_test(u64 mem_size, void *const base_addr, u32 actual_size, u32 packet_num
 	//control the datamover controller
 		write_int(map_base, LEN_LOW, mem_size_low);
 		write_int(map_base, LEN_HIGH, mem_size_high);
+		write_int(map_base, DDR_OFFSET_LOW, ddr_offset_low);
+		write_int(map_base, DDR_OFFSET_HIGH, ddr_offset_high);
 		usleep(1000);
 		write_int(map_base, START, 1); //set start to 1
+		
 	//check the status
 		timeout_cnt = 0;
 		while ((read_int(map_base, PKT_CNT_TX) != packet_num || read_int(map_base, PKT_CNT_RX) != packet_num) && timeout_cnt != 3000) {

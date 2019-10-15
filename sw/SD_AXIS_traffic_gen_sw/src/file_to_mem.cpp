@@ -45,13 +45,13 @@ int file_to_mem_ps(const char* inFilePath, void *const ddr_base, u64 & total_siz
 	if (!inFile.good()) {
 		cout << "ERROR : input file is invalid!" << endl;
 		ret = -1;
-		goto file_to_mem_cleanup;
+		goto file_to_mem_ps_cleanup;
 	}
 
 	if (fpga_ram_fd < 0) {
 		perror("Could not open /dev/mem");
 		ret = -1;
-		goto file_to_mem_cleanup;
+		goto file_to_mem_ps_cleanup;
 	}
 	
 	cout << "reading file into FPGA memory ..." << endl;
@@ -64,12 +64,12 @@ int file_to_mem_ps(const char* inFilePath, void *const ddr_base, u64 & total_siz
 	
 	actual_size = 0; //Needed?
 	while (1) {
-		map_base = mmap(0, RW_MAX_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fpga_ram_fd, ddr_base + offset);
+		map_base = mmap(0, RW_MAX_SIZE, PROT_READ | PROT_WRITE, MAP_SHARED, fpga_ram_fd, (u64 const)ddr_base + offset);
 		
 		if (map_base == MAP_FAILED) {
 			perror("Could not map FPGA DDR memory");
 			ret = -1;
-			goto file_to_mem_cleanup;
+			goto file_to_mem_ps_cleanup;
 		}
 		
 		//Cap current transfer size to 128M
@@ -108,7 +108,7 @@ int file_to_mem_ps(const char* inFilePath, void *const ddr_base, u64 & total_siz
 		map_base = MAP_FAILED;
 	}
 	
-	file_to_mem_cleanup:
+	file_to_mem_ps_cleanup:
 	
 	if (map_base != MAP_FAILED) {
 		munmap(map_base, RW_MAX_SIZE);
@@ -120,7 +120,7 @@ int file_to_mem_ps(const char* inFilePath, void *const ddr_base, u64 & total_siz
 	return ret;
 }
 
-int file_to_mem(const char* inFilePath, u64 & total_size, u64 & actual_size, u32 & packet_num) {
+int file_to_mem(const char* inFilePath, void *const ddr_base, u64 & total_size, u64 & actual_size, u32 & packet_num) {
 	ifstream inFile;
 	struct stat stat_buf;
 	stat(inFilePath, &stat_buf);
@@ -158,6 +158,9 @@ int file_to_mem(const char* inFilePath, u64 & total_size, u64 & actual_size, u32
 	const char * dma_to_device = "/dev/xdma0_h2c_0";
 	//unsigned char *buf; //Unused
 	int dma_to_device_fd = open((const char *)dma_to_device, O_RDWR | O_NONBLOCK | O_SYNC);
+	//Seek to desired ddr location
+	lseek(dma_to_device_fd, (off_t const) ddr_base, SEEK_SET);
+	
 	//u32 count = 0; //Unused
 	u32 offset = 0;
 	u64 remain_size = total_size;

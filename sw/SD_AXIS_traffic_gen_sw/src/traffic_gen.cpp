@@ -87,9 +87,9 @@ int main(int argc, char** argv) {
 	
 	if (PCI_mode) {
 		file_to_mem(inFilePath,offset,total_size,actual_size,packet_num);
-		do_test(total_size, base_addr, actual_size, packet_num, iter_num);
+		do_test(total_size, base_addr, offset, actual_size, packet_num, iter_num);
 	} else {
 		file_to_mem_ps(inFilePath,offset,total_size,actual_size,packet_num);
-		do_test_ps(total_size, base_addr, actual_size, packet_num, iter_num);
+		do_test_ps(total_size, base_addr, offset, actual_size, packet_num, iter_num);
 	}
 }
