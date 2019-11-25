@@ -26,10 +26,10 @@ create_bd_pin -dir I -type rst sys_rst_n
 create_bd_pin -dir I -from 0 -to 0 usr_irq_req
 
 # Create instance: util_ds_buf_0, and set properties
-set gt_buf [create_bd_cell -type ip -vlnv xilinx.com:ip:util_ds_buf:2.1 util_ds_buf_0]
+set gt_buf [addip util_ds_buf util_ds_buf_0]
 set_property -dict [ list CONFIG.C_BUF_TYPE {IBUFDSGTE} ] "$gt_buf"
 
-set xdma_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:xdma:4.1 xdma_0 ]
+set xdma_0 [ addip xdma xdma_0 ]
 set_property -dict [ list \
 	CONFIG.PF0_DEVICE_ID_mqdma {903F} \
 	CONFIG.PF2_DEVICE_ID_mqdma {903F} \
@@ -82,7 +82,7 @@ create_bd_pin -dir O -from 0 -to 0 -type rst interconnect_aresetn
 create_bd_pin -dir I -type rst sys_rst
 
 # Create instance: ddr4_0, and set properties
-set ddr4_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:ddr4:2.2 ddr4_0 ]
+set ddr4_0 [ addip ddr4 ddr4_0 ]
 set_property -dict [ list \
 	CONFIG.C0.CKE_WIDTH {2} \
 	CONFIG.C0.CK_WIDTH {2} \
@@ -100,7 +100,7 @@ set_property -dict [ list \
 ] $ddr4_0
 
 # Create instance: proc_sys_reset_0, and set properties
-set proc_sys_reset_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:proc_sys_reset:5.0 proc_sys_reset_0 ]
+set proc_sys_reset_0 [ addip proc_sys_reset proc_sys_reset_0 ]
 
 # Create interface connections
 connect_bd_intf_net -intf_net Conn1 [get_bd_intf_pins C0_DDR4_0] [get_bd_intf_pins ddr4_0/C0_DDR4]
@@ -126,9 +126,9 @@ create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:axis_rtl:1.0 S_AXIS
 create_bd_pin -dir I -from 0 -to 0 rst
 create_bd_pin -dir I -type clk clk
 
-create_bd_cell -type ip -vlnv xilinx.com:ip:axis_data_fifo:2.0 axis_data_fifo_0
+addip axis_data_fifo axis_data_fifo_0
 set_property -dict [list CONFIG.FIFO_DEPTH {2048}] [get_bd_cells axis_data_fifo_0]
-create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 util_vector_logic_0
+addip util_vector_logic util_vector_logic_0
 set_property -dict [list CONFIG.C_SIZE {1} CONFIG.C_OPERATION {not} CONFIG.LOGO_FILE {data/sym_notgate.png}] [get_bd_cells util_vector_logic_0]
 
 connect_bd_intf_net [get_bd_intf_pins S_AXIS] [get_bd_intf_pins axis_data_fifo_0/S_AXIS]
@@ -149,7 +149,7 @@ create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:axis_rtl:1.0 S_AXIS
 create_bd_pin -dir I -from 0 -to 0 rst
 create_bd_pin -dir I -type clk clk
 # Create instance: axis_register_slice_0, and set properties
-set axis_register_slice_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_register_slice:1.1 axis_register_slice_0 ]
+set axis_register_slice_0 [ addip axis_register_slice axis_register_slice_0 ]
 # Create instance: axis_register_slice_1, and set properties
 set axis_register_slice_1 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_register_slice:1.1 axis_register_slice_1 ]
 # Create instance: axis_register_slice_2, and set properties
@@ -161,7 +161,7 @@ set axis_register_slice_4 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_reg
 # Create instance: axis_register_slice_5, and set properties
 set axis_register_slice_5 [ create_bd_cell -type ip -vlnv xilinx.com:ip:axis_register_slice:1.1 axis_register_slice_5 ]
 # Create instance: util_vector_logic_0, and set properties
-set util_vector_logic_0 [ create_bd_cell -type ip -vlnv xilinx.com:ip:util_vector_logic:2.0 util_vector_logic_0 ]
+set util_vector_logic_0 [ addip util_vector_logic util_vector_logic_0 ]
 set_property -dict [ list \
 	CONFIG.C_OPERATION {not} \
 	CONFIG.C_SIZE {1} \
@@ -204,7 +204,7 @@ create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 one
 create_bd_cell -type ip -vlnv xilinx.com:ip:xlconstant:1.1 zero
 set_property -dict [list CONFIG.CONST_VAL {0}] [get_bd_cells zero]
 create_bd_cell -type ip -vlnv clarkshen.com:user:SD_AXIS_traffic_gen:1.0 SD_AXIS_traffic_gen_0
-create_bd_cell -type ip -vlnv xilinx.com:ip:axi_interconnect:2.1 axi_interconnect_0
+addip axi_interconnect axi_interconnect_0
 set_property -dict [list CONFIG.NUM_SI {2} CONFIG.NUM_MI {1}] [get_bd_cells axi_interconnect_0]
 
 connect_bd_net [get_bd_pins one/dout] [get_bd_pins xdma_wrap/sys_rst_n]
@@ -241,7 +241,7 @@ connect_bd_net [get_bd_pins xdma_wrap/axi_aresetn] [get_bd_pins axi_interconnect
 connect_bd_net [get_bd_pins SD_AXIS_traffic_gen_0/rst_out] [get_bd_pins cmp_fifo/rst]
 connect_bd_net [get_bd_pins SD_AXIS_traffic_gen_0/rst_out] [get_bd_pins fake_app/rst]
 
-create_bd_cell -type ip -vlnv xilinx.com:ip:system_ila:1.1 system_ila_0
+addip system_ila system_ila_0
 set_property -dict [list CONFIG.C_SLOT {1} CONFIG.C_BRAM_CNT {6.5} CONFIG.C_NUM_MONITOR_SLOTS {2} CONFIG.C_SLOT_0_INTF_TYPE {xilinx.com:interface:axis_rtl:1.0} CONFIG.C_SLOT_1_INTF_TYPE {clarkshen.com:user:SD_AXIS_dbg_rtl:1.0}] [get_bd_cells system_ila_0]
 connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_0_AXIS] -boundary_type upper [get_bd_intf_pins fake_app/S_AXIS]
 connect_bd_intf_net [get_bd_intf_pins system_ila_0/SLOT_1_SD_AXIS_DBG] [get_bd_intf_pins SD_AXIS_traffic_gen_0/user_SD_AXIS_dbg]
