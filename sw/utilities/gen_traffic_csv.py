@@ -5,7 +5,7 @@ import sys
 
 #Utility functions##########################
 def msg(name=None):							    
-    return '''gen_traffic_csv.py [-option1 <value1>] ... [-optionN <valueN>] <output_path>'''
+	return '''gen_traffic_csv.py [-option1 <value1>] ... [-optionN <valueN>] <output_path>'''
 def str2bool(v):
 	if isinstance(v, bool):
 		return v
@@ -27,23 +27,23 @@ def print_progress(percentage):
 ###########################################
 
 #arg parser object#########################
-class traffic_gen_args:
+class arg_parser:
 	def __init__(self):
 		self.parser = argparse.ArgumentParser(
 			prog='gen_traffic_csv.py',
-			formatter_class=argparse.ArgumentDefaultsHelpFormatter,
+			formatter_class=argparse.MetavarTypeHelpFormatter,
 			description='Available options:', usage=msg())
 		self.parser.add_argument('output_path', metavar='<output file>', type=str, help='set output file path')
 		self.parser.add_argument('-n', default=10, type=int, help='set how many packets to send')
-		self.parser.add_argument('-min', default=1, type=int, help='set the minimal packet length in byte')
-		self.parser.add_argument('-max', default=128, type=int, help='set the maxmum packet length in byte')
+		self.parser.add_argument('-min', default=1, type=int, help='set the minimal packet size in byte')
+		self.parser.add_argument('-max', default=128, type=int, help='set the maxmum packet size in byte')
 		self.parser.add_argument('-ratio', default=0, type=float, help='set the idle ratio')
-		self.parser.add_argument('-dwidth', default=64, type=int, help='set the data width in byte')
-		self.parser.add_argument('-no_data', action="store_true", help='the packets won\'t contain tdata filed if set')
-		self.parser.add_argument('-no_keep', action="store_true", help='the packets won\'t contain tkeep filed if set')
-		self.parser.add_argument('-no_last', action="store_true", help='the packets won\'t contain tlast filed if set')
-		self.parser.add_argument('-ignore_cycle_id', action="store_true", help='set if cycle id should be denoted in the csv')
-		self.parser.add_argument('-ignore_packet_id', action="store_true", help='set if packet id should be denoted in the csv')
+		self.parser.add_argument('-dwidth', default=64, type=int, help='set the bus TDATA width in byte')
+		self.parser.add_argument('-no_data', action="store_true", help='the packets won\'t contain TDATA filed if set')
+		self.parser.add_argument('-no_keep', action="store_true", help='the packets won\'t contain TKEEP filed if set')
+		self.parser.add_argument('-no_last', action="store_true", help='the packets won\'t contain TLAST filed if set')
+		self.parser.add_argument('-ignore_cycle_id', action="store_true", help='cycle id won\'t be denoted in the csv if set')
+		self.parser.add_argument('-ignore_packet_id', action="store_true", help='packet id won\'t be denoted in the csv if set')
 
 	def parse(self):
 		self.args = self.parser.parse_args()
@@ -67,7 +67,7 @@ class traffic_gen_args:
 			self.has_last = True
 		if not self.has_data and self.has_keep:
 			self.has_keep = False
-			print("Warning from Arg Parser: changing has_keep to be 'false' since has_data is 'false'")
+			print("Warning from Arg Parser: TKEEP field is supressed because TDATA field is opt-out")
 		if self.args.ignore_cycle_id:
 			self.denote_cycle_id = False
 		else:
@@ -143,7 +143,7 @@ class csv_writer:
 			if not is_idle:
 				for i in range(self.args.datawidth):
 					if self.packet_remain_bytes - i > 0:
-						keep_list[int(i/4)] = keep_list[int(i/4)] + 2**(3-i%4)
+						keep_list[int(i/4)] = keep_list[int(i/4)] + (1<<(3-i%4))
 			keep_string = '0x'
 			for octet in keep_list:
 				keep_string = keep_string + str('%x' % octet)
@@ -173,7 +173,7 @@ class csv_writer:
 ###########################################
 
 if __name__ == '__main__':
-	args = traffic_gen_args()
+	args = arg_parser()
 	if args.parse():
 		sys.exit()
 	writer = csv_writer(args)
