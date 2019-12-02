@@ -1,101 +1,130 @@
 #include <iomanip>
 #include <cstdlib>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/mman.h>
-#include <unistd.h>
-#include <chrono>
-#include <iterator>
-#include <string>
-#include <cstring>
 #include <iostream>
-#include <fstream>
-#include <sstream>
-#include <vector>
-#include <string>
-#include <sys/stat.h>
-#include "csv_row.h"
+#include "arch.h"
 #include "file_to_mem.h"
-typedef uint64_t u64;
-typedef uint32_t u32;
 using namespace std;
 
-int file_to_mem(const char* inFilePath, u64 & total_size, u64 & actual_size, u32 & packet_num) {
-	ifstream inFile;
-	struct stat stat_buf;
-	stat(inFilePath, &stat_buf);
-	inFile.open(inFilePath);
+int BIN_READER::init(const char* inFilePath) {
+	inFile.open(inFilePath, ios::in | ios::binary);
 	if (!inFile.good()) {
 		cout << "ERROR : input file is invalid!" << endl;
 		return 1;
 	}
+	return 0;
+}
 
-	csv_row row;
-	inFile >> row; //skip line 1
-	//get first line size
-	u32 size_fisrt_line = 0;
-	for (int i = 0; i < row.size(); i++) {
-		size_fisrt_line += row[i].size() + 1;
+int BIN_READER::read_param() {
+	if (!inFile.good()) {
+		cout << "ERROR : input file is invalid!" << endl;
+		return 1;
 	}
-	////////////////////
-	//use line 2 to get line size for the rest content, so that we can calculate the line number
-	inFile >> row; 
-	u32 dwidth = (row[2].size()-2)/2;
-	u32 size_per_line = dwidth + dwidth/4 + 14;
-	u32 line_num = (stat_buf.st_size - size_fisrt_line) / size_per_line;
-	u32 burst_num = (line_num-1)/63+1; //calculate how many burst we need;
-	total_size = burst_num*64*64; //total transfer size
-	//////////////////////////////////////////////////////////////////////
+	inFile.read((char*)&total_size,sizeof(u64));
+	inFile.read((char*)&actual_size,sizeof(u64));
+	inFile.read((char*)&packet_num,sizeof(u64));
+	if (total_size <= 0 || actual_size <= 0 || packet_num <= 0) {
+		cout << "ERROR : got wrong parameters from binary file!" << endl;
+		return 1;
+	}
+	return 0;
+}
 
-	unsigned char * alloc = NULL;
+int BIN_READER::dump_a_page(volatile void * mem_ptr, int offset) {
+	volatile void * loc_to_write = (volatile void*)((char*)mem_ptr + offset);
+	inFile.read((char*)loc_to_write, PAGE_SIZE);
+	return 0;
+}
 
-	if (total_size < RW_MAX_SIZE) {
-		posix_memalign((void **)&alloc, 4096 , total_size + 4096);
-	} else {
-		posix_memalign((void **)&alloc, 4096 , RW_MAX_SIZE + 4096);
+#if ARCH == ARM
+int DMA_ENGINE::init(u64 offset) {
+        //Initialize the AXIDMA device for PS side/////////////////////////////////////////////
+	axidma_dev = axidma_init();
+	if (axidma_dev == NULL) {
+		axidma_destroy(axidma_dev);
+		cout << "Error: Failed to initialize the AXI DMA device!" << endl;
+		return 1;
+        }
+        ////////////////////////////////////////////////////////////////////////////
+
+        // Get TX Channel//////////////////////////////////////////////////////////////
+        tx_chans = axidma_get_dma_tx(axidma_dev);
+        if (tx_chans->len < 1) {
+		cout << "Error: No transmit channels were found!" << endl;
+		axidma_destroy(axidma_dev);
+		return 1;
+        }
+        ////////////////////////////////////////////////////////////////////////////
+
+	//Initialize the AXIDMA device for PL side/////////////////////////////////////////////
+	#if AXIL_CHAR_DEV_TYPE == 0
+		const char* AXIL_CHAR_DEV = "/dev/mem";
+	#else
+		const char* AXIL_CHAR_DEV = "/dev/mpsoc_axiregs";
+	#endif
+
+	int fd = open(AXIL_CHAR_DEV, O_RDWR | O_SYNC);
+	if (fd == -1) {
+		cout << "memory map error!" << endl;
+		close(fd);
+		return 1;
+	}
+	pldma_vptr = mmap(NULL, 0x1000, PROT_READ|PROT_WRITE, MAP_SHARED, fd, PLDMA_MM_ADDR);
+	if (pldma_vptr == NULL) {
+		cout << "memory map error!" << endl;
+		close(fd);
+		return 1;
+	}
+	////////////////////////////////////////////////////////////////////////////
+
+	//Initialize DMA buffer
+	buf = NULL;
+	//set the start address
+	dst_addr = offset;
+}
+
+int DMA_ENGINE::allocate_buf() {
+	buf = axidma_malloc(axidma_dev, DMA_BUFFER_SIZE);
+        if (buf == NULL) {
+                cout << "Failed to allocate the buffer!" << endl;
+		axidma_free(buf);
+		return 1;
+	} 
+}
+
+int DMA_ENGINE::transfer(int size) {
+	DDR_PL2PS(tx_chans[CHANNEL_TO_USE],
+		axidma_dev,
+		PLDMA_ADDR,
+		dst_addr,
+		size,
+		buf);
+
+}
+#else
+#endif
+int DMA_to_FPGA(const char* inFilePath, u64 offset, u64 & actual_size, u64 & packet_num) {
+	if (offset % PAGE_SIZE != 0) {
+		cout << "ERROR : wrong offset! page alignment violated!" << endl;
+		return 1;
 	}
 
-	const char * dma_to_device = "/dev/xdma0_h2c_0";
-	unsigned char *buf;
-	int dma_to_device_fd = open((const char *)dma_to_device, O_RDWR | O_NONBLOCK | O_SYNC);
-	u32 count = 0;
-	u32 offset = 0;
-	u64 remain_size = total_size;
-	u32 curr_burst_num;
-	unsigned char meta[63];
-	unsigned char data[63][64];
-	u64 current_trans_size;
-	cout << "reading file into FPGA memory ..." << endl;
-	inFile.seekg(0,inFile.beg); //go back to SOF
-	inFile >> row; //skip line 1 again
-	while (1) {
-		current_trans_size = remain_size > RW_MAX_SIZE ? RW_MAX_SIZE : remain_size;
-		curr_burst_num = (current_trans_size - 1) / 4096 + 1;
-		memset(alloc, 0, current_trans_size);
-		for (int i = 0; i < curr_burst_num; i++) {
-			memset(meta,0,63);
-			memset(data,0,63*64);
-			for (int j = 0; j < 63; j++) {
-				if (inFile >> row) {
-					actual_size += row.write_meta(meta[62-j]);
-					row.write_data(data[j]);
-				} else break;
-			}
-			memcpy(alloc+i*64*64+1,meta,63);
-			memcpy(alloc+i*64*64+64,data,63*64);
+	BIN_READER bin_reader;
+	if (bin_reader.init(inFilePath)) return 1;
+	if (bin_reader.read_param()) return 1;
+
+	DMA_ENGINE dma_engine;
+	if (dma_engine.init(offset)) return 1;
+	if (dma_engine.allocate_buf()) return 1;
+
+	cout << "reading file into FPGA memory" << endl;
+	for (u64 i = 0; i < bin_reader.total_size; i+=DMA_BUFFER_SIZE_IN_PAGE) {
+		u64 j;
+		for (j = 0; j < DMA_BUFFER_SIZE_IN_PAGE; j++) {
+			if (i+j == bin_reader.total_size) break;
+			bin_reader.dump_a_page(dma_engine.buf, j*PAGE_SIZE);
 		}
-		if (offset > 0) lseek(dma_to_device_fd, offset, SEEK_SET);
-		write(dma_to_device_fd, alloc, current_trans_size);
-		if (remain_size > RW_MAX_SIZE) {
-			remain_size -= RW_MAX_SIZE;
-			offset += RW_MAX_SIZE;
-		}
-		else break;
+		if (dma_engine.transfer(PAGE_SIZE*j)) return 1;
 	}
-	packet_num = 1+stoi(row[1],0,10);
-	free(alloc);
-	close(dma_to_device_fd);
-	cout << "done moving packets to FPGA DDR" << endl;
-//////////////////////////////////////////////////////
+	cout << "done moving packets to FPGA memory" << endl;
 	return 0;
 }
