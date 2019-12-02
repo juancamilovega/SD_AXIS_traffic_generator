@@ -128,7 +128,7 @@ class binary_writer:
 			else:
 				ret = False
 				break
-		self.total_data_size = self.total_data_size + 4096
+		self.total_data_size = self.total_data_size + 1
 		self.out_f.write(mem_page)
 		return ret
 	def write_parameter(self):
@@ -136,6 +136,9 @@ class binary_writer:
 		total_data_size_bin = bytearray.fromhex(format(self.total_data_size,'016x'))
 		actual_data_size_bin = bytearray.fromhex(format(self.actual_data_size,'016x'))
 		packet_num_bin = bytearray.fromhex(format(self.packet_num,'016x'))
+		total_data_size_bin.reverse()
+		actual_data_size_bin.reverse()
+		packet_num_bin.reverse()
 		self.out_f.write(total_data_size_bin)
 		self.out_f.write(actual_data_size_bin)
 		self.out_f.write(packet_num_bin)
@@ -157,7 +160,7 @@ if __name__ == '__main__':
 			break
 	writer.write_parameter()
 	print("Finished generating traffic bin file")
-	print("totoal file size = "+str(writer.total_data_size))
-	print("acutal data size = "+str(writer.actual_data_size))
+	print("totoal file size in page = "+str(writer.total_data_size))
+	print("acutal data size in byte = "+str(writer.actual_data_size))
 	print("number of packet = "+str(writer.packet_num))
 
