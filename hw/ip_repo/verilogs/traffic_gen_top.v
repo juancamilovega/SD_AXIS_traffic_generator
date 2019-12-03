@@ -29,10 +29,10 @@ module traffic_gen_top #
 	output wire [2:0] to_ddr_arsize,
 	output wire [3:0] to_ddr_aruser,
 //AXI_LITE Slave Ctrl BUS
-	input wire [6:0] s_axilite_ctrl_araddr,
+	input wire [7:0] s_axilite_ctrl_araddr,
 	output wire s_axilite_ctrl_arready,
 	input wire s_axilite_ctrl_arvalid,
-	input wire [6:0] s_axilite_ctrl_awaddr,
+	input wire [7:0] s_axilite_ctrl_awaddr,
 	output wire s_axilite_ctrl_awready,
 	input wire s_axilite_ctrl_awvalid,
 	input wire s_axilite_ctrl_bready,
