@@ -50,6 +50,7 @@ void sw_interface (
 	#pragma HLS INTERFACE s_axilite port=axil_pkt_cnt_rx
 	#pragma HLS INTERFACE ap_none port=start
 	#pragma HLS INTERFACE ap_none port=rst
+	#pragma HLS INTERFACE ap_none port=offset
 	#pragma HLS INTERFACE ap_none port=transfer_length
 	#pragma HLS INTERFACE ap_none port=mismatch
 	#pragma HLS INTERFACE ap_none port=tx_timeElapse

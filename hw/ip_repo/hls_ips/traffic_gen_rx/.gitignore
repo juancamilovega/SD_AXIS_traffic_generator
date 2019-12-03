@@ -1,0 +1,10 @@
+*
+!config.mk
+!include
+!include/*
+!Makefile
+!scripts
+!scripts/*
+!src
+!src/*
+!.gitignore

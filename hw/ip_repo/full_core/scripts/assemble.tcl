@@ -61,6 +61,7 @@ connect_bd_net [get_bd_ports ddr_clk] [get_bd_pins proc_sys_reset/slowest_sync_c
 connect_bd_net [get_bd_ports ddr_clk] [get_bd_pins cross_domain_fifo/s_axis_aclk]
 connect_bd_net [get_bd_pins sw_interface/rst] [get_bd_pins traffic_gen_tx/ap_rst]
 connect_bd_net [get_bd_pins sw_interface/start] [get_bd_pins datamover_controller/start]
+connect_bd_net [get_bd_pins sw_interface/offset] [get_bd_pins datamover_controller/offset]
 connect_bd_net [get_bd_pins sw_interface/transfer_length] [get_bd_pins datamover_controller/length]
 connect_bd_net [get_bd_pins datamover_controller/ap_rst] [get_bd_pins sw_interface/rst]
 connect_bd_net [get_bd_pins util_vector_logic/Op1] [get_bd_pins sw_interface/rst]
@@ -220,5 +221,5 @@ update_ip_catalog
 ipx::merge_project_changes files [ipx::current_core]
 ipx::check_integrity -quiet [ipx::current_core]
 ipx::archive_core $project_dir/$project_name/${project_name}.srcs/sources_1/bd/${project_name}/${project_name}_1.0.zip [ipx::current_core]
-close_project
-exit
+#close_project
+#exit
