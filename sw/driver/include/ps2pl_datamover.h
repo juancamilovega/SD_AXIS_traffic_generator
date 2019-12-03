@@ -1,5 +1,5 @@
 #include <stdint.h>
-#include "arch.h"
+#include "hw.h"
 #include "libaxidma.h" // Interface of the AXI DMA library
 #include "axil_ctrl.h" // axi lite interface 
 typedef uint64_t u64;

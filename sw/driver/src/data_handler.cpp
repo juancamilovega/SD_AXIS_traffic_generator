@@ -7,6 +7,7 @@ int DATA_HANDLER::init(const char* inFilePath, AXIL_CONTROLLER * controller, u64
 	if (bin_reader.init(inFilePath)) return 1;
 	if (data_mover.init(controller)) return 1;
 	if (bin_reader.read_param()) return 1;
+	page_num = bin_reader.page_num;
 	actual_size = bin_reader.actual_size;
 	packet_num = bin_reader.packet_num;
 	if (data_mover.allocate_buf()) return 1;

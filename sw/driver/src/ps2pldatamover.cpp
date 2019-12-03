@@ -62,12 +62,12 @@ int PS2PL_DATAMOVER::transfer(u64 offset, u32 size) {
 		return 1;
 	}
 	//do transfer from PS to PL
-        int old_ctrl_value = axil_cntlr->read(DMA_CtrlReg_OFFSET);
+        int old_ctrl_value = axil_cntlr->read(DMA_CtrlReg);
         int new_ctrl_value = old_ctrl_value | DMA_CR_RUNSTOP_MASK; //Start the S2MM channel by setting the run/stop bit to 1
-	axil_cntlr->write(DMA_CtrlReg_OFFSET, new_ctrl_value);
-	axil_cntlr->write(DMA_MemLoc_OFFSET, low32(offset));
-	axil_cntlr->write(DMA_MemLoc_MSB_OFFSET, high32(offset));
-	axil_cntlr->write(DMA_BUFFLEN_OFFSET, size);
+	axil_cntlr->write(DMA_CtrlReg, new_ctrl_value);
+	axil_cntlr->write(DMA_MemLoc, low32(offset));
+	axil_cntlr->write(DMA_MemLoc_MSB, high32(offset));
+	axil_cntlr->write(DMA_BUFFLEN, size);
 	if (axidma_oneway_transfer(axidma_dev, tx_chans->data[PS_DMA_CHANNEL_ID], (char *)buf, size, true)) {
 		cout << "ERROR : PS side DMA transfer failed!" << endl;
 		clean_up();
