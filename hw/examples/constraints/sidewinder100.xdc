@@ -1,24 +1,3 @@
-####200M CLOCK###############################################
-#create_clock -period 5.000 [get_ports clk200_clk_p]
-#set_property PACKAGE_PIN N13 [get_ports clk200_clk_p]
-#set_property PACKAGE_PIN M13 [get_ports clk200_clk_n]
-#set_property IOSTANDARD LVDS_25 [get_ports clk200_clk_p]
-#set_property IOSTANDARD LVDS_25 [get_ports clk200_clk_n]
-
-
-###GT REF CLOCK#############################################
-#create_clock -period 3.103 [get_ports gt_ref_clk_p]
-#set_property PACKAGE_PIN L32 [get_ports gt_ref_clk_p]
-#set_property PACKAGE_PIN L33 [get_ports gt_ref_clk_n]
-
-##create_clock -period 3.103 [get_ports gt_ref1_clk_p]
-##set_property PACKAGE_PIN R32 [get_ports gt_ref1_clk_p]
-##set_property PACKAGE_PIN R33 [get_ports gt_ref1_clk_n]
-
-create_clock -period 10.000 [get_ports sys_clk_p]
-set_property LOC [get_package_pins -of_objects [get_bels [get_sites -filter {NAME =~ *COMMON*} -of_objects [get_iobanks -of_objects [get_sites GTHE4_CHANNEL_X0Y7]]]/REFCLK0P]] [get_ports sys_clk_p]
-set_property LOC [get_package_pins -of_objects [get_bels [get_sites -filter {NAME =~ *COMMON*} -of_objects [get_iobanks -of_objects [get_sites GTHE4_CHANNEL_X0Y7]]]/REFCLK0N]] [get_ports sys_clk_n]
-
 ## DDR4###################################################
 set_property IOSTANDARD DIFF_POD12_DCI [get_ports {C0_DDR4_0_dqs_c[0]}]
 set_property IOSTANDARD DIFF_POD12_DCI [get_ports {C0_DDR4_0_dqs_c[1]}]
