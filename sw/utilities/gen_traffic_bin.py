@@ -7,6 +7,18 @@ import os
 #Utility functions##########################
 def msg(name=None):
 	return '''gen_traffic_bin.py -i <input csv file path> [-o <output binary file path>]'''
+
+class progress_printer:
+	def __init__(self):
+		self.percentage = -1
+	def print(self, curr, total):
+		if self.percentage < int(100*float(curr)/float(total)):
+			self.percentage = int(100*float(curr)/float(total))
+			progress_str='progress : ['+'>'*self.percentage+' '*(100-self.percentage)+'] '+str(self.percentage)+'%\r'
+			if self.percentage == 100:
+				print(progress_str)
+			else:
+				print(progress_str, end='', flush=True)
 ############################################
 
 class arg_parser:
@@ -20,6 +32,9 @@ class arg_parser:
 	def parse(self):
 		self.args = self.parser.parse_args()
 		self.in_file = self.args.i
+		f = open(self.in_file)
+		self.num_lines = sum(1 for line in f)
+		f.close()
 		in_file_base = os.path.basename(self.in_file)
 		if self.args.o == '/dev/null':
 			out_file = re.sub('.csv$','.bin', in_file_base)
@@ -60,7 +75,7 @@ class binary_writer:
 		self.out_f.write(bytearray(24))
 		return False
 	def write_page(self):
-		ret = True
+		ret = self.lineNum + 64
 		mem_page = bytearray(4096)
 		for i in range(63):
 			self.lineNum = self.lineNum + 1
@@ -79,7 +94,7 @@ class binary_writer:
 				elif tvalid_str != '0':
 					print("Error at line #"+lineNum_str+" : invalid TVALID value :" + tvalid_str)
 					self.close()
-					return False
+					return 0
 				if tvalid == 1:
 					#tkeep
 					if self.field_idx_dict['tkeep'] != -1:
@@ -88,7 +103,7 @@ class binary_writer:
 						if len(tkeep_str) > 16:
 							print("Error at line #"+lineNum_str+" : TKEEP shouln't be more than 64 bits")
 							self.close()
-							return False
+							return 0
 						for letter in tkeep_str:
 							if letter.lower() == 'f':
 								mty = mty+4
@@ -101,7 +116,7 @@ class binary_writer:
 							elif letter.lower() != '0':
 								print("Error at line #"+lineNum_str+" : invalid TKEEP value " + tkeep_str)
 								self.close()
-								return False
+								return 0
 						self.actual_data_size = self.actual_data_size + mty
 					#tlast
 					if self.field_idx_dict['tlast'] != -1:
@@ -112,7 +127,7 @@ class binary_writer:
 						elif tlast_str != '0':
 							print("Error at line #"+lineNum_str+" : invalid TLAST value : " + tlast_str)
 							self.close()
-							return False
+							return 0
 				#write meta
 				mem_page[63-i] = (mty << 1) | tlast
 				#write tdata
@@ -126,7 +141,7 @@ class binary_writer:
 						mem_page[tdata_idx] = octet
 						tdata_idx = tdata_idx+1
 			else:
-				ret = False
+				ret = 0
 				break
 		self.total_data_size = self.total_data_size + 1
 		self.out_f.write(mem_page)
@@ -155,9 +170,13 @@ if __name__ == '__main__':
 	if writer.read_header():
 		sys.exit()
 	print("Start generating traffic bin file")
+	pp = progress_printer()
 	while True:
-		if not writer.write_page():
+		curr_linenum = writer.write_page()
+		if curr_linenum == 0:
 			break
+		else:
+			pp.print(curr_linenum+1, args.num_lines-1)
 	writer.write_parameter()
 	print("Finished generating traffic bin file")
 	print("totoal file size in page = "+str(writer.total_data_size))

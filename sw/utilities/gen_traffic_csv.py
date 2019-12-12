@@ -18,12 +18,17 @@ def str2bool(v):
 def isPowerOfTwo(num):
 	return ((num & (num - 1)) == 0) and num != 0
 
-def print_progress(percentage):
-	progress_str='progress : ['+'>'*percentage+' '*(100-percentage)+'] '+str(percentage)+'%\r'
-	if percentage != 100:
-		print(progress_str, end='', flush=True)
-	else:
-		print(progress_str)
+class progress_printer:
+	def __init__(self):
+		self.percentage = -1
+	def print(self, curr, total):
+		if self.percentage < int(100*float(curr)/float(total)):
+			self.percentage = int(100*float(curr)/float(total))
+			progress_str='progress : ['+'>'*self.percentage+' '*(100-self.percentage)+'] '+str(self.percentage)+'%\r'
+			if self.percentage == 100:
+				print(progress_str)
+			else:
+				print(progress_str, end='', flush=True)
 ###########################################
 
 #arg parser object#########################
@@ -48,7 +53,13 @@ class arg_parser:
 	def parse(self):
 		self.args = self.parser.parse_args()
 		self.N_packets = self.args.n
-		self.packets_size = [random.randint(self.args.min,self.args.max) for _ in range(self.N_packets)]
+		print("Start assigning packet size for each packet")
+		pp = progress_printer()
+		self.packets_size = [None] * self.N_packets
+		for i in range(self.N_packets):
+			self.packets_size[i] = random.randint(self.args.min,self.args.max)
+			pp.print(i, self.N_packets-1)
+		print("Finish assigning packet size")
 		self.datawidth = self.args.dwidth
 		if not isPowerOfTwo(self.datawidth):
 			print("Error from Arg Parser: data width has to be power of 2")
@@ -90,10 +101,14 @@ class arg_parser:
 			if self.N_total_cycles-2 < N_idle_cycles:
 				print("Error: idle ratio too large, do you really want to send any data???")
 				return True
-			self.idle_cycles = random.sample(range(1,self.N_total_cycles-1), N_idle_cycles)
+			print("Start choosing idle cycles")
+			all_possible_cycles = list(range(1,self.N_total_cycles-1))
+			random.shuffle(all_possible_cycles)
+			self.idle_cycles = all_possible_cycles[0:N_idle_cycles]
+			self.idle_cycles.sort()
+			print("Done choosing idle cycles")
 		else:
 			self.idle_cycles = [-1]
-		self.idle_cycles.sort()
 		return False
 ###########################################
 
@@ -106,7 +121,7 @@ class csv_writer:
 		self.packet_id = 0
 		self.idle_idx = 0
 		self.packet_remain_bytes = args.packets_size[0]
-		self.percentage = 0
+		self.str_to_file = ''
 	def write_header(self):
 		if self.args.denote_cycle_id:
 			self.f.write('cycle_id,')
@@ -121,14 +136,15 @@ class csv_writer:
 		self.f.write('tvalid\n')
 	def write_line(self):
 		if self.cycle_id == self.args.idle_cycles[self.idle_idx]:
-			self.idle_idx = self.idle_idx+1
+			if self.idle_idx != len(self.args.idle_cycles)-1:
+				self.idle_idx = self.idle_idx+1
 			is_idle = True
 		else:
 			is_idle = False
 		if self.args.denote_cycle_id:
-			self.f.write(str(self.cycle_id)+',')
+			self.str_to_file = self.str_to_file + str(self.cycle_id)+','
 		if self.args.denote_packet_id:
-			self.f.write(str(self.packet_id)+',')
+			self.str_to_file = self.str_to_file + str(self.packet_id)+','
 		if self.args.has_data:
 			if is_idle:
 				data_list = [0 for _ in range(self.args.datawidth)]
@@ -137,7 +153,7 @@ class csv_writer:
 			data_string = '0x'
 			for octet in data_list:
 				data_string = data_string + str('%02x' % octet)
-			self.f.write(data_string+',')
+			self.str_to_file = self.str_to_file + data_string+','
 		if self.args.has_keep:
 			keep_list = [0 for _ in range(int(self.args.datawidth/4))]
 			if not is_idle:
@@ -147,13 +163,13 @@ class csv_writer:
 			keep_string = '0x'
 			for octet in keep_list:
 				keep_string = keep_string + str('%x' % octet)
-			self.f.write(keep_string+',')
+			self.str_to_file = self.str_to_file + keep_string+','
 		if self.args.has_last:
 			if is_idle or self.packet_remain_bytes > self.args.datawidth:
 				last_value = 0
 			else:
 				last_value = 1
-			self.f.write(str(last_value)+',')
+			self.str_to_file = self.str_to_file + str(last_value)+','
 		if is_idle:
 			valid_value = 0
 		else:
@@ -163,10 +179,10 @@ class csv_writer:
 				self.packet_id = self.packet_id+1
 				if self.packet_id < self.args.N_packets:
 					self.packet_remain_bytes = self.args.packets_size[self.packet_id]
-		self.f.write(str(valid_value)+'\n')
-		if self.percentage < 100*float(self.cycle_id)/float(self.args.N_total_cycles):
-			self.percentage = int(100*float(self.cycle_id)/float(self.args.N_total_cycles))
-			print_progress(self.percentage)
+		self.str_to_file = self.str_to_file + str(valid_value)+'\n'
+		if self.cycle_id % 1000 == 0 or self.cycle_id == self.args.N_total_cycles-1:
+			self.f.write(self.str_to_file)
+			self.str_to_file = ''
 		self.cycle_id = self.cycle_id + 1
 	def close(self):
 		self.f.close()
@@ -179,9 +195,9 @@ if __name__ == '__main__':
 	writer = csv_writer(args)
 	writer.write_header()
 	print("Start generating traffic csv file")
-	print_progress(0)
-	for _ in range(args.N_total_cycles):
+	pp = progress_printer()
+	for i in range(args.N_total_cycles):
 		writer.write_line()
+		pp.print(i, args.N_total_cycles-1)
 	writer.close()
-	print_progress(100)
 	print("Finished generating traffic csv file")
