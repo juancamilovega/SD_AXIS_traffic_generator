@@ -25,20 +25,22 @@ void datamover_controller(
 	m_axis = m_axis_reg;
 	if (!start_reg & start) {
 		core_on = 1;
-		curr_addr = 0;
+		curr_addr = offset;
 		length_reg = length;
-	} else if (!core_on) {
-		m_axis_reg.tdata = 0;
-		m_axis_reg.tvalid = 0;
-	} else if (m_axis_tready && core_on) {
-		byte_to_transfer = length_reg > TRANS_LIMITE ? TRANS_LIMITE : length_reg(22,0);
-		m_axis_reg.tdata = (ZEROx8,curr_addr,TYPE,byte_to_transfer);
-		m_axis_reg.tvalid = 1;
-		if (length_reg > TRANS_LIMITE) {
-			length_reg -= TRANS_LIMITE;
-			curr_addr += TRANS_LIMITE;
+	} else if (m_axis_tready) {
+		if (!core_on) {
+			m_axis_reg.tdata = 0;
+			m_axis_reg.tvalid = 0;
 		} else {
-			core_on = 0;
+			byte_to_transfer = length_reg > TRANS_LIMITE ? TRANS_LIMITE : length_reg(22,0);
+			m_axis_reg.tdata = (ZEROx8,curr_addr,TYPE,byte_to_transfer);
+			m_axis_reg.tvalid = 1;
+			if (length_reg > TRANS_LIMITE) {
+				length_reg -= TRANS_LIMITE;
+				curr_addr += TRANS_LIMITE;
+			} else {
+				core_on = 0;
+			}
 		}
 	}
 	start_reg = start;
