@@ -174,6 +174,7 @@ if __name__ == '__main__':
 	while True:
 		curr_linenum = writer.write_page()
 		if curr_linenum == 0:
+			pp.print(args.num_lines-1, args.num_lines-1)
 			break
 		else:
 			pp.print(curr_linenum+1, args.num_lines-1)
