@@ -17,7 +17,7 @@ int CONTROL_HANDLER::do_test(int iter_num) {
 	double tx_timeElapse = 0;
 	double rx_timeElapse = 0;
 	double latency;
-	cout << "launch the hardware test, sending " << (double)actual_size/1024/1024*8*iter_num << " Mbit data"<< endl;
+	cout << "launching the hardware test, sending " << (double)actual_size/1024/1024*8*iter_num << " Mbit data"<< endl;
 	for (int i = 0; i < iter_num; i++) {
 	//reset the core
 		//clear start bit
