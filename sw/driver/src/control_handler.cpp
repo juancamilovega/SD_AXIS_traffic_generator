@@ -51,8 +51,8 @@ int CONTROL_HANDLER::do_test(int iter_num) {
 			return 1;
 		}
 
-		tx_timestamp_sum += (double)axil_cntlr->read(TX_TIMESTAMP_SUM_LOW)+(((double)axil_cntlr->read(TX_TIMESTAMP_SUM_HIGH))<<32);
-		rx_timestamp_sum += (double)axil_cntlr->read(RX_TIMESTAMP_SUM_LOW)+(((double)axil_cntlr->read(RX_TIMESTAMP_SUM_HIGH))<<32);
+		tx_timestamp_sum += (double)(axil_cntlr->read(TX_TIMESTAMP_SUM_LOW)+(((u64)axil_cntlr->read(TX_TIMESTAMP_SUM_HIGH))<<32));
+		rx_timestamp_sum += (double)(axil_cntlr->read(RX_TIMESTAMP_SUM_LOW)+(((u64)axil_cntlr->read(RX_TIMESTAMP_SUM_HIGH))<<32));
 		tx_timeElapse += ((double)axil_cntlr->read(TX_TIMEELAPSE))*CLOCK_PERIOD;
 		rx_timeElapse += ((double)axil_cntlr->read(RX_TIMEELAPSE))*CLOCK_PERIOD;
         	latency = (rx_timestamp_sum-tx_timestamp_sum)*CLOCK_PERIOD;
