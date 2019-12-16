@@ -32,7 +32,6 @@ int CONTROL_HANDLER::do_test(int iter_num) {
 		axil_cntlr->write(START, 1); //set start to 1
 	//check the status
 		timeout_cnt = 0;
-		usleep(100000);
 
 		while ((axil_cntlr->read(PKT_CNT_TX) != packet_num || axil_cntlr->read(PKT_CNT_RX) != packet_num) && timeout_cnt != 3000) {
 			timeout_cnt++;
