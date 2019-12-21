@@ -1,6 +1,7 @@
 ################################################################
 # This is a generated script based on design: SD_AXIS_traffic_gen_ex
 ################################################################
+
 namespace eval _tcl {
 proc get_script_folder {} {
    set script_path [file normalize [info script]]
@@ -1002,16 +1003,16 @@ proc create_hier_cell_SD_traffic_gen { parentCell nameHier } {
   current_bd_instance $hier_obj
 
   # Create interface pins
-  create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:aximm_rtl:1.0 M00_AXI
-
   create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:axis_rtl:1.0 from_app
 
   create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:axis_rtl:1.0 to_app
 
+  create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:aximm_rtl:1.0 to_mem
+
 
   # Create pins
-  create_bd_pin -dir I -type clk M00_ACLK
-  create_bd_pin -dir I -type rst M00_ARESETN
+  create_bd_pin -dir I -type clk mem_clk
+  create_bd_pin -dir I -type rst mem_rst
   create_bd_pin -dir I -type clk traffic_clk
   create_bd_pin -dir I -type rst traffic_clk_rst
   create_bd_pin -dir I -from 0 -to 0 -type rst traffic_clk_rstn
@@ -1047,22 +1048,22 @@ proc create_hier_cell_SD_traffic_gen { parentCell nameHier } {
  ] $system_ila_0
 
   # Create interface connections
-  connect_bd_intf_net -intf_net Conn1 [get_bd_intf_pins M00_AXI] [get_bd_intf_pins axi_interconnect_2/M00_AXI]
+  connect_bd_intf_net -intf_net Conn1 [get_bd_intf_pins to_mem] [get_bd_intf_pins axi_interconnect_2/M00_AXI]
   connect_bd_intf_net -intf_net Conn7 [get_bd_intf_pins from_app] [get_bd_intf_pins SD_AXIS_traffic_gen_0/from_app]
   connect_bd_intf_net -intf_net [get_bd_intf_nets Conn7] [get_bd_intf_pins from_app] [get_bd_intf_pins system_ila_0/SLOT_1_AXIS]
   connect_bd_intf_net -intf_net Conn8 [get_bd_intf_pins to_app] [get_bd_intf_pins SD_AXIS_traffic_gen_0/to_app]
   connect_bd_intf_net -intf_net [get_bd_intf_nets Conn8] [get_bd_intf_pins to_app] [get_bd_intf_pins system_ila_0/SLOT_0_AXIS]
   connect_bd_intf_net -intf_net S00_AXI_1 [get_bd_intf_pins axi_interconnect_2/S00_AXI] [get_bd_intf_pins software/M_AXI_MM2S]
   connect_bd_intf_net -intf_net S01_AXI_1 [get_bd_intf_pins axi_interconnect_2/S01_AXI] [get_bd_intf_pins software/M_AXI_S2MM]
-  connect_bd_intf_net -intf_net S02_AXI_1 [get_bd_intf_pins SD_AXIS_traffic_gen_0/to_ddr] [get_bd_intf_pins axi_interconnect_2/S02_AXI]
+  connect_bd_intf_net -intf_net S02_AXI_1 [get_bd_intf_pins SD_AXIS_traffic_gen_0/to_mem] [get_bd_intf_pins axi_interconnect_2/S02_AXI]
   connect_bd_intf_net -intf_net SD_AXIS_traffic_gen_0_to_cmp_fifo [get_bd_intf_pins SD_AXIS_traffic_gen_0/to_cmp_fifo] [get_bd_intf_pins cmp_fifo/S_AXIS]
   connect_bd_intf_net -intf_net SD_AXIS_traffic_gen_0_user_SD_AXIS_dbg [get_bd_intf_pins SD_AXIS_traffic_gen_0/user_SD_AXIS_dbg] [get_bd_intf_pins system_ila_0/SLOT_2_SD_AXIS_DBG]
   connect_bd_intf_net -intf_net cmp_fifo_M_AXIS [get_bd_intf_pins SD_AXIS_traffic_gen_0/from_cmp_fifo] [get_bd_intf_pins cmp_fifo/M_AXIS]
   connect_bd_intf_net -intf_net software_M_AXI [get_bd_intf_pins SD_AXIS_traffic_gen_0/s_axilite_ctrl] [get_bd_intf_pins software/M_AXI]
 
   # Create port connections
-  connect_bd_net -net DDR_c0_ddr4_ui_clk [get_bd_pins M00_ACLK] [get_bd_pins SD_AXIS_traffic_gen_0/ddr_clk] [get_bd_pins axi_interconnect_2/ACLK] [get_bd_pins axi_interconnect_2/M00_ACLK] [get_bd_pins axi_interconnect_2/S02_ACLK]
-  connect_bd_net -net DDR_interconnect_aresetn [get_bd_pins M00_ARESETN] [get_bd_pins axi_interconnect_2/ARESETN] [get_bd_pins axi_interconnect_2/M00_ARESETN] [get_bd_pins axi_interconnect_2/S02_ARESETN]
+  connect_bd_net -net DDR_c0_ddr4_ui_clk [get_bd_pins mem_clk] [get_bd_pins SD_AXIS_traffic_gen_0/mem_clk] [get_bd_pins axi_interconnect_2/ACLK] [get_bd_pins axi_interconnect_2/M00_ACLK] [get_bd_pins axi_interconnect_2/S02_ACLK]
+  connect_bd_net -net DDR_interconnect_aresetn [get_bd_pins mem_rst] [get_bd_pins axi_interconnect_2/ARESETN] [get_bd_pins axi_interconnect_2/M00_ARESETN] [get_bd_pins axi_interconnect_2/S02_ARESETN]
   connect_bd_net -net M02_ARESETN_1 [get_bd_pins traffic_clk_rstn] [get_bd_pins cmp_fifo/s_axis_aresetn] [get_bd_pins software/M02_ARESETN] [get_bd_pins system_ila_0/resetn]
   connect_bd_net -net S01_ACLK_1 [get_bd_pins axi_interconnect_2/S00_ACLK] [get_bd_pins axi_interconnect_2/S01_ACLK] [get_bd_pins software/pl_clk0]
   connect_bd_net -net S01_ARESETN_1 [get_bd_pins axi_interconnect_2/S00_ARESETN] [get_bd_pins axi_interconnect_2/S01_ARESETN] [get_bd_pins software/interconnect_aresetn]
@@ -1226,7 +1227,7 @@ proc create_root_design { parentCell } {
   create_hier_cell_app [current_bd_instance .] app
 
   # Create interface connections
-  connect_bd_intf_net -intf_net C0_DDR4_S_AXI_1 [get_bd_intf_pins MEMORY/C0_DDR4_S_AXI] [get_bd_intf_pins SD_traffic_gen/M00_AXI]
+  connect_bd_intf_net -intf_net C0_DDR4_S_AXI_1 [get_bd_intf_pins MEMORY/C0_DDR4_S_AXI] [get_bd_intf_pins SD_traffic_gen/to_mem]
   connect_bd_intf_net -intf_net C0_SYS_CLK_0_1 [get_bd_intf_ports C0_SYS_CLK_0] [get_bd_intf_pins MEMORY/C0_SYS_CLK_0]
   connect_bd_intf_net -intf_net DDR_C0_DDR4_0 [get_bd_intf_ports C0_DDR4_0] [get_bd_intf_pins MEMORY/C0_DDR4_0]
   connect_bd_intf_net -intf_net SD_AXIS_traffic_gen_0_to_app [get_bd_intf_pins SD_traffic_gen/to_app] [get_bd_intf_pins app/S_AXIS]
@@ -1234,15 +1235,15 @@ proc create_root_design { parentCell } {
   connect_bd_intf_net -intf_net traffic_clk_DS_1 [get_bd_intf_ports traffic_clk_DS] [get_bd_intf_pins app/traffic_clk_DS]
 
   # Create port connections
-  connect_bd_net -net DDR_c0_ddr4_ui_clk [get_bd_pins MEMORY/c0_ddr4_ui_clk] [get_bd_pins SD_traffic_gen/M00_ACLK]
-  connect_bd_net -net DDR_interconnect_aresetn [get_bd_pins MEMORY/interconnect_aresetn] [get_bd_pins SD_traffic_gen/M00_ARESETN]
+  connect_bd_net -net DDR_c0_ddr4_ui_clk [get_bd_pins MEMORY/c0_ddr4_ui_clk] [get_bd_pins SD_traffic_gen/mem_clk]
+  connect_bd_net -net DDR_interconnect_aresetn [get_bd_pins MEMORY/interconnect_aresetn] [get_bd_pins SD_traffic_gen/mem_rst]
   connect_bd_net -net M02_ARESETN_1 [get_bd_pins SD_traffic_gen/traffic_clk_rstn] [get_bd_pins app/traffic_clk_rstn]
   connect_bd_net -net Net [get_bd_pins SD_traffic_gen/traffic_clk] [get_bd_pins app/traffic_clk]
   connect_bd_net -net ext_reset_in_0_1 [get_bd_ports ext_rstn] [get_bd_pins app/ext_reset_in]
   connect_bd_net -net rst_1 [get_bd_pins SD_traffic_gen/traffic_clk_rst] [get_bd_pins app/traffic_clk_rst]
 
   # Create address segments
-  create_bd_addr_seg -range 0x000400000000 -offset 0x00000000 [get_bd_addr_spaces SD_traffic_gen/SD_AXIS_traffic_gen_0/to_ddr] [get_bd_addr_segs MEMORY/ddr4_0/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] SEG_ddr4_0_C0_DDR4_ADDRESS_BLOCK
+  create_bd_addr_seg -range 0x000400000000 -offset 0x00000000 [get_bd_addr_spaces SD_traffic_gen/SD_AXIS_traffic_gen_0/to_mem] [get_bd_addr_segs MEMORY/ddr4_0/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] SEG_ddr4_0_C0_DDR4_ADDRESS_BLOCK
   create_bd_addr_seg -range 0x00010000 -offset 0xA0030000 [get_bd_addr_spaces SD_traffic_gen/software/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs SD_traffic_gen/SD_AXIS_traffic_gen_0/s_axilite_ctrl/reg0] SEG_SD_AXIS_traffic_gen_0_reg0
   create_bd_addr_seg -range 0x00010000 -offset 0xA0010000 [get_bd_addr_spaces SD_traffic_gen/software/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs SD_traffic_gen/software/AXIDMAs/axi_dma_0/S_AXI_LITE/Reg] SEG_axi_dma_0_Reg
   create_bd_addr_seg -range 0x00010000 -offset 0xA0020000 [get_bd_addr_spaces SD_traffic_gen/software/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs SD_traffic_gen/software/AXIDMAs/axi_dma_1/S_AXI_LITE/Reg] SEG_axi_dma_1_Reg
