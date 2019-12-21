@@ -1,3 +1,13 @@
+## EXTERNAL RESET#########################################
+set_property PACKAGE_PIN B6 [get_ports ext_rstn]
+set_property IOSTANDARD LVCMOS33 [get_ports ext_rstn]
+## TRAFFIC CLOCK##########################################
+create_clock -period 5.000 [get_ports traffic_clk_DS_clk_p]
+set_property PACKAGE_PIN N13 [get_ports traffic_clk_DS_clk_p]
+set_property PACKAGE_PIN M13 [get_ports traffic_clk_DS_clk_n]
+set_property IOSTANDARD LVDS_25 [get_ports traffic_clk_DS_clk_p]
+set_property IOSTANDARD LVDS_25 [get_ports traffic_clk_DS_clk_n]
+
 ## DDR4###################################################
 set_property IOSTANDARD DIFF_POD12_DCI [get_ports {C0_DDR4_0_dqs_c[0]}]
 set_property IOSTANDARD DIFF_POD12_DCI [get_ports {C0_DDR4_0_dqs_c[1]}]
