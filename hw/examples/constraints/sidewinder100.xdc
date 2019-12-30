@@ -7,6 +7,9 @@ set_property PACKAGE_PIN N13 [get_ports traffic_clk_DS_clk_p]
 set_property PACKAGE_PIN M13 [get_ports traffic_clk_DS_clk_n]
 set_property IOSTANDARD LVDS_25 [get_ports traffic_clk_DS_clk_p]
 set_property IOSTANDARD LVDS_25 [get_ports traffic_clk_DS_clk_n]
+## DDR CLOCK##############################################
+set_property PACKAGE_PIN AR27 [get_ports ddr_clk_DS_clk_p]
+set_property PACKAGE_PIN AT27 [get_ports ddr_clk_DS_clk_n]
 
 ## DDR4###################################################
 set_property IOSTANDARD DIFF_POD12_DCI [get_ports {C0_DDR4_0_dqs_c[0]}]
@@ -573,8 +576,6 @@ set_property PACKAGE_PIN AU13 [get_ports {C0_DDR4_0_dqs_t[7]}]
 set_property PACKAGE_PIN AK23 [get_ports {C0_DDR4_0_odt[0]}]
 set_property PACKAGE_PIN AJ24 [get_ports {C0_DDR4_0_odt[1]}]
 set_property PACKAGE_PIN AT25 [get_ports C0_DDR4_0_reset_n]
-set_property PACKAGE_PIN AT27 [get_ports C0_SYS_CLK_0_clk_n]
-set_property PACKAGE_PIN AR27 [get_ports C0_SYS_CLK_0_clk_p]
 set_property PACKAGE_PIN AU25 [get_ports {C0_DDR4_0_adr[0]}]
 set_property PACKAGE_PIN AN26 [get_ports {C0_DDR4_0_adr[1]}]
 set_property PACKAGE_PIN AR24 [get_ports {C0_DDR4_0_adr[2]}]

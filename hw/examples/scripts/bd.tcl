@@ -879,6 +879,97 @@ proc create_hier_cell_software { parentCell nameHier } {
   current_bd_instance $oldCurInst
 }
 
+# Hierarchical cell: memory
+proc create_hier_cell_memory { parentCell nameHier } {
+
+  variable script_folder
+
+  if { $parentCell eq "" || $nameHier eq "" } {
+     catch {common::send_msg_id "BD_TCL-102" "ERROR" "create_hier_cell_memory() - Empty argument(s)!"}
+     return
+  }
+
+  # Get object for parentCell
+  set parentObj [get_bd_cells $parentCell]
+  if { $parentObj == "" } {
+     catch {common::send_msg_id "BD_TCL-100" "ERROR" "Unable to find parent cell <$parentCell>!"}
+     return
+  }
+
+  # Make sure parentObj is hier blk
+  set parentType [get_property TYPE $parentObj]
+  if { $parentType ne "hier" } {
+     catch {common::send_msg_id "BD_TCL-101" "ERROR" "Parent <$parentObj> has TYPE = <$parentType>. Expected to be <hier>."}
+     return
+  }
+
+  # Save current instance; Restore later
+  set oldCurInst [current_bd_instance .]
+
+  # Set parent object as current
+  current_bd_instance $parentObj
+
+  # Create cell and set as current instance
+  set hier_obj [create_bd_cell -type hier $nameHier]
+  current_bd_instance $hier_obj
+
+  # Create interface pins
+  create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:ddr4_rtl:1.0 C0_DDR4_0
+
+  create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 ddr_clk_DS
+
+  create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:aximm_rtl:1.0 to_mem
+
+
+  # Create pins
+  create_bd_pin -dir O -type clk mem_clk
+  create_bd_pin -dir O -from 0 -to 0 -type rst mem_rstn
+
+  # Create instance: ddr4_0, and set properties
+  set ddr4_0 [ addip ddr4 ddr4_0 ]
+  set_property -dict [ list \
+   CONFIG.C0.CKE_WIDTH {2} \
+   CONFIG.C0.CK_WIDTH {2} \
+   CONFIG.C0.CS_WIDTH {2} \
+   CONFIG.C0.DDR4_AxiAddressWidth {34} \
+   CONFIG.C0.DDR4_AxiDataWidth {512} \
+   CONFIG.C0.DDR4_CLKOUT0_DIVIDE {5} \
+   CONFIG.C0.DDR4_CasLatency {15} \
+   CONFIG.C0.DDR4_DataMask {DM_NO_DBI} \
+   CONFIG.C0.DDR4_DataWidth {64} \
+   CONFIG.C0.DDR4_Ecc {false} \
+   CONFIG.C0.DDR4_InputClockPeriod {3001} \
+   CONFIG.C0.DDR4_MemoryPart {MTA16ATF2G64HZ-2G3} \
+   CONFIG.C0.DDR4_MemoryType {SODIMMs} \
+   CONFIG.C0.DDR4_TimePeriod {938} \
+   CONFIG.C0.ODT_WIDTH {2} \
+ ] $ddr4_0
+
+  # Create instance: proc_sys_reset_1, and set properties
+  set proc_sys_reset_1 [ addip proc_sys_reset proc_sys_reset_1 ]
+
+  # Create instance: xlconstant_0, and set properties
+  set xlconstant_0 [ addip xlconstant xlconstant_0 ]
+  set_property -dict [ list \
+   CONFIG.CONST_VAL {0} \
+ ] $xlconstant_0
+
+  # Create interface connections
+  connect_bd_intf_net -intf_net Conn1 [get_bd_intf_pins ddr_clk_DS] [get_bd_intf_pins ddr4_0/C0_SYS_CLK]
+  connect_bd_intf_net -intf_net Conn2 [get_bd_intf_pins to_mem] [get_bd_intf_pins ddr4_0/C0_DDR4_S_AXI]
+  connect_bd_intf_net -intf_net Conn3 [get_bd_intf_pins C0_DDR4_0] [get_bd_intf_pins ddr4_0/C0_DDR4]
+
+  # Create port connections
+  connect_bd_net -net ddr4_0_c0_ddr4_ui_clk [get_bd_pins mem_clk] [get_bd_pins ddr4_0/c0_ddr4_ui_clk] [get_bd_pins proc_sys_reset_1/slowest_sync_clk]
+  connect_bd_net -net ddr4_0_c0_ddr4_ui_clk_sync_rst [get_bd_pins ddr4_0/c0_ddr4_ui_clk_sync_rst] [get_bd_pins proc_sys_reset_1/ext_reset_in]
+  connect_bd_net -net proc_sys_reset_1_interconnect_aresetn [get_bd_pins mem_rstn] [get_bd_pins proc_sys_reset_1/interconnect_aresetn]
+  connect_bd_net -net proc_sys_reset_1_peripheral_aresetn [get_bd_pins ddr4_0/c0_ddr4_aresetn] [get_bd_pins proc_sys_reset_1/peripheral_aresetn]
+  connect_bd_net -net xlconstant_0_dout [get_bd_pins ddr4_0/sys_rst] [get_bd_pins xlconstant_0/dout]
+
+  # Restore current instance
+  current_bd_instance $oldCurInst
+}
+
 # Hierarchical cell: app
 proc create_hier_cell_app { parentCell nameHier } {
 
@@ -914,9 +1005,9 @@ proc create_hier_cell_app { parentCell nameHier } {
   current_bd_instance $hier_obj
 
   # Create interface pins
-  create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:axis_rtl:1.0 M_AXIS
+  create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:axis_rtl:1.0 from_app
 
-  create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:axis_rtl:1.0 S_AXIS
+  create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:axis_rtl:1.0 to_app
 
   create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 traffic_clk_DS
 
@@ -950,13 +1041,13 @@ proc create_hier_cell_app { parentCell nameHier } {
 
   # Create interface connections
   connect_bd_intf_net -intf_net Conn1 [get_bd_intf_pins traffic_clk_DS] [get_bd_intf_pins traffic_clk_src/traffic_clk]
-  connect_bd_intf_net -intf_net Conn2 [get_bd_intf_pins S_AXIS] [get_bd_intf_pins axis_register_slice_0/S_AXIS]
+  connect_bd_intf_net -intf_net Conn2 [get_bd_intf_pins to_app] [get_bd_intf_pins axis_register_slice_0/S_AXIS]
   connect_bd_intf_net -intf_net axis_register_slice_0_M_AXIS [get_bd_intf_pins axis_register_slice_0/M_AXIS] [get_bd_intf_pins axis_register_slice_1/S_AXIS]
   connect_bd_intf_net -intf_net axis_register_slice_1_M_AXIS [get_bd_intf_pins axis_register_slice_1/M_AXIS] [get_bd_intf_pins axis_register_slice_2/S_AXIS]
   connect_bd_intf_net -intf_net axis_register_slice_2_M_AXIS [get_bd_intf_pins axis_register_slice_2/M_AXIS] [get_bd_intf_pins axis_register_slice_3/S_AXIS]
   connect_bd_intf_net -intf_net axis_register_slice_3_M_AXIS [get_bd_intf_pins axis_register_slice_3/M_AXIS] [get_bd_intf_pins axis_register_slice_4/S_AXIS]
   connect_bd_intf_net -intf_net axis_register_slice_4_M_AXIS [get_bd_intf_pins axis_register_slice_4/M_AXIS] [get_bd_intf_pins axis_register_slice_5/S_AXIS]
-  connect_bd_intf_net -intf_net axis_register_slice_5_M_AXIS [get_bd_intf_pins M_AXIS] [get_bd_intf_pins axis_register_slice_5/M_AXIS]
+  connect_bd_intf_net -intf_net axis_register_slice_5_M_AXIS [get_bd_intf_pins from_app] [get_bd_intf_pins axis_register_slice_5/M_AXIS]
 
   # Create port connections
   connect_bd_net -net aclk_1 [get_bd_pins traffic_clk] [get_bd_pins axis_register_slice_0/aclk] [get_bd_pins axis_register_slice_1/aclk] [get_bd_pins axis_register_slice_2/aclk] [get_bd_pins axis_register_slice_3/aclk] [get_bd_pins axis_register_slice_4/aclk] [get_bd_pins axis_register_slice_5/aclk] [get_bd_pins traffic_clk_src/traffic_clk]
@@ -1012,7 +1103,7 @@ proc create_hier_cell_SD_traffic_gen { parentCell nameHier } {
 
   # Create pins
   create_bd_pin -dir I -type clk mem_clk
-  create_bd_pin -dir I -type rst mem_rst
+  create_bd_pin -dir I -type rst mem_rstn
   create_bd_pin -dir I -type clk traffic_clk
   create_bd_pin -dir I -type rst traffic_clk_rst
   create_bd_pin -dir I -from 0 -to 0 -type rst traffic_clk_rstn
@@ -1039,12 +1130,13 @@ proc create_hier_cell_SD_traffic_gen { parentCell nameHier } {
   # Create instance: system_ila_0, and set properties
   set system_ila_0 [ addip system_ila system_ila_0 ]
   set_property -dict [ list \
-   CONFIG.C_BRAM_CNT {6} \
-   CONFIG.C_NUM_MONITOR_SLOTS {3} \
-   CONFIG.C_SLOT {2} \
+   CONFIG.C_BRAM_CNT {42} \
+   CONFIG.C_NUM_MONITOR_SLOTS {4} \
+   CONFIG.C_SLOT {3} \
    CONFIG.C_SLOT_0_INTF_TYPE {xilinx.com:interface:axis_rtl:1.0} \
    CONFIG.C_SLOT_1_INTF_TYPE {xilinx.com:interface:axis_rtl:1.0} \
    CONFIG.C_SLOT_2_INTF_TYPE {clarkshen.com:user:SD_AXIS_dbg_rtl:1.0} \
+   CONFIG.C_SLOT_3_INTF_TYPE {xilinx.com:interface:axis_rtl:1.0} \
  ] $system_ila_0
 
   # Create interface connections
@@ -1059,109 +1151,17 @@ proc create_hier_cell_SD_traffic_gen { parentCell nameHier } {
   connect_bd_intf_net -intf_net SD_AXIS_traffic_gen_0_to_cmp_fifo [get_bd_intf_pins SD_AXIS_traffic_gen_0/to_cmp_fifo] [get_bd_intf_pins cmp_fifo/S_AXIS]
   connect_bd_intf_net -intf_net SD_AXIS_traffic_gen_0_user_SD_AXIS_dbg [get_bd_intf_pins SD_AXIS_traffic_gen_0/user_SD_AXIS_dbg] [get_bd_intf_pins system_ila_0/SLOT_2_SD_AXIS_DBG]
   connect_bd_intf_net -intf_net cmp_fifo_M_AXIS [get_bd_intf_pins SD_AXIS_traffic_gen_0/from_cmp_fifo] [get_bd_intf_pins cmp_fifo/M_AXIS]
+  connect_bd_intf_net -intf_net [get_bd_intf_nets cmp_fifo_M_AXIS] [get_bd_intf_pins cmp_fifo/M_AXIS] [get_bd_intf_pins system_ila_0/SLOT_3_AXIS]
   connect_bd_intf_net -intf_net software_M_AXI [get_bd_intf_pins SD_AXIS_traffic_gen_0/s_axilite_ctrl] [get_bd_intf_pins software/M_AXI]
 
   # Create port connections
   connect_bd_net -net DDR_c0_ddr4_ui_clk [get_bd_pins mem_clk] [get_bd_pins SD_AXIS_traffic_gen_0/mem_clk] [get_bd_pins axi_interconnect_2/ACLK] [get_bd_pins axi_interconnect_2/M00_ACLK] [get_bd_pins axi_interconnect_2/S02_ACLK]
-  connect_bd_net -net DDR_interconnect_aresetn [get_bd_pins mem_rst] [get_bd_pins axi_interconnect_2/ARESETN] [get_bd_pins axi_interconnect_2/M00_ARESETN] [get_bd_pins axi_interconnect_2/S02_ARESETN]
+  connect_bd_net -net DDR_interconnect_aresetn [get_bd_pins mem_rstn] [get_bd_pins axi_interconnect_2/ARESETN] [get_bd_pins axi_interconnect_2/M00_ARESETN] [get_bd_pins axi_interconnect_2/S02_ARESETN]
   connect_bd_net -net M02_ARESETN_1 [get_bd_pins traffic_clk_rstn] [get_bd_pins cmp_fifo/s_axis_aresetn] [get_bd_pins software/M02_ARESETN] [get_bd_pins system_ila_0/resetn]
   connect_bd_net -net S01_ACLK_1 [get_bd_pins axi_interconnect_2/S00_ACLK] [get_bd_pins axi_interconnect_2/S01_ACLK] [get_bd_pins software/pl_clk0]
   connect_bd_net -net S01_ARESETN_1 [get_bd_pins axi_interconnect_2/S00_ARESETN] [get_bd_pins axi_interconnect_2/S01_ARESETN] [get_bd_pins software/interconnect_aresetn]
   connect_bd_net -net rst_1 [get_bd_pins traffic_clk_rst] [get_bd_pins SD_AXIS_traffic_gen_0/rst]
   connect_bd_net -net traffic_clk_1 [get_bd_pins traffic_clk] [get_bd_pins SD_AXIS_traffic_gen_0/traffic_clk] [get_bd_pins cmp_fifo/s_axis_aclk] [get_bd_pins software/M02_ACLK] [get_bd_pins system_ila_0/clk]
-
-  # Restore current instance
-  current_bd_instance $oldCurInst
-}
-
-# Hierarchical cell: MEMORY
-proc create_hier_cell_MEMORY { parentCell nameHier } {
-
-  variable script_folder
-
-  if { $parentCell eq "" || $nameHier eq "" } {
-     catch {common::send_msg_id "BD_TCL-102" "ERROR" "create_hier_cell_MEMORY() - Empty argument(s)!"}
-     return
-  }
-
-  # Get object for parentCell
-  set parentObj [get_bd_cells $parentCell]
-  if { $parentObj == "" } {
-     catch {common::send_msg_id "BD_TCL-100" "ERROR" "Unable to find parent cell <$parentCell>!"}
-     return
-  }
-
-  # Make sure parentObj is hier blk
-  set parentType [get_property TYPE $parentObj]
-  if { $parentType ne "hier" } {
-     catch {common::send_msg_id "BD_TCL-101" "ERROR" "Parent <$parentObj> has TYPE = <$parentType>. Expected to be <hier>."}
-     return
-  }
-
-  # Save current instance; Restore later
-  set oldCurInst [current_bd_instance .]
-
-  # Set parent object as current
-  current_bd_instance $parentObj
-
-  # Create cell and set as current instance
-  set hier_obj [create_bd_cell -type hier $nameHier]
-  current_bd_instance $hier_obj
-
-  # Create interface pins
-  create_bd_intf_pin -mode Master -vlnv xilinx.com:interface:ddr4_rtl:1.0 C0_DDR4_0
-
-  create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:aximm_rtl:1.0 C0_DDR4_S_AXI
-
-  create_bd_intf_pin -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 C0_SYS_CLK_0
-
-
-  # Create pins
-  create_bd_pin -dir O -type clk c0_ddr4_ui_clk
-  create_bd_pin -dir O -from 0 -to 0 -type rst interconnect_aresetn
-  create_bd_pin -dir O -from 0 -to 0 -type rst peripheral_reset
-
-  # Create instance: ddr4_0, and set properties
-  set ddr4_0 [ addip ddr4 ddr4_0 ]
-  set_property -dict [ list \
-   CONFIG.C0.CKE_WIDTH {2} \
-   CONFIG.C0.CK_WIDTH {2} \
-   CONFIG.C0.CS_WIDTH {2} \
-   CONFIG.C0.DDR4_AxiAddressWidth {34} \
-   CONFIG.C0.DDR4_AxiDataWidth {512} \
-   CONFIG.C0.DDR4_CLKOUT0_DIVIDE {5} \
-   CONFIG.C0.DDR4_CasLatency {15} \
-   CONFIG.C0.DDR4_DataMask {DM_NO_DBI} \
-   CONFIG.C0.DDR4_DataWidth {64} \
-   CONFIG.C0.DDR4_Ecc {false} \
-   CONFIG.C0.DDR4_InputClockPeriod {3001} \
-   CONFIG.C0.DDR4_MemoryPart {MTA16ATF2G64HZ-2G3} \
-   CONFIG.C0.DDR4_MemoryType {SODIMMs} \
-   CONFIG.C0.DDR4_TimePeriod {938} \
-   CONFIG.C0.ODT_WIDTH {2} \
- ] $ddr4_0
-
-  # Create instance: proc_sys_reset_1, and set properties
-  set proc_sys_reset_1 [ addip proc_sys_reset proc_sys_reset_1 ]
-
-  # Create instance: xlconstant_0, and set properties
-  set xlconstant_0 [ addip xlconstant xlconstant_0 ]
-  set_property -dict [ list \
-   CONFIG.CONST_VAL {0} \
- ] $xlconstant_0
-
-  # Create interface connections
-  connect_bd_intf_net -intf_net Conn1 [get_bd_intf_pins C0_SYS_CLK_0] [get_bd_intf_pins ddr4_0/C0_SYS_CLK]
-  connect_bd_intf_net -intf_net Conn2 [get_bd_intf_pins C0_DDR4_S_AXI] [get_bd_intf_pins ddr4_0/C0_DDR4_S_AXI]
-  connect_bd_intf_net -intf_net Conn3 [get_bd_intf_pins C0_DDR4_0] [get_bd_intf_pins ddr4_0/C0_DDR4]
-
-  # Create port connections
-  connect_bd_net -net ddr4_0_c0_ddr4_ui_clk [get_bd_pins c0_ddr4_ui_clk] [get_bd_pins ddr4_0/c0_ddr4_ui_clk] [get_bd_pins proc_sys_reset_1/slowest_sync_clk]
-  connect_bd_net -net ddr4_0_c0_ddr4_ui_clk_sync_rst [get_bd_pins ddr4_0/c0_ddr4_ui_clk_sync_rst] [get_bd_pins proc_sys_reset_1/ext_reset_in]
-  connect_bd_net -net proc_sys_reset_1_interconnect_aresetn [get_bd_pins interconnect_aresetn] [get_bd_pins proc_sys_reset_1/interconnect_aresetn]
-  connect_bd_net -net proc_sys_reset_1_peripheral_aresetn [get_bd_pins ddr4_0/c0_ddr4_aresetn] [get_bd_pins proc_sys_reset_1/peripheral_aresetn]
-  connect_bd_net -net proc_sys_reset_1_peripheral_reset [get_bd_pins peripheral_reset] [get_bd_pins proc_sys_reset_1/peripheral_reset]
-  connect_bd_net -net xlconstant_0_dout [get_bd_pins ddr4_0/sys_rst] [get_bd_pins xlconstant_0/dout]
 
   # Restore current instance
   current_bd_instance $oldCurInst
@@ -1203,10 +1203,10 @@ proc create_root_design { parentCell } {
   # Create interface ports
   set C0_DDR4_0 [ create_bd_intf_port -mode Master -vlnv xilinx.com:interface:ddr4_rtl:1.0 C0_DDR4_0 ]
 
-  set C0_SYS_CLK_0 [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 C0_SYS_CLK_0 ]
+  set ddr_clk_DS [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 ddr_clk_DS ]
   set_property -dict [ list \
    CONFIG.FREQ_HZ {333111111} \
-   ] $C0_SYS_CLK_0
+   ] $ddr_clk_DS
 
   set traffic_clk_DS [ create_bd_intf_port -mode Slave -vlnv xilinx.com:interface:diff_clock_rtl:1.0 traffic_clk_DS ]
 
@@ -1217,36 +1217,36 @@ proc create_root_design { parentCell } {
    CONFIG.POLARITY {ACTIVE_LOW} \
  ] $ext_rstn
 
-  # Create instance: MEMORY
-  create_hier_cell_MEMORY [current_bd_instance .] MEMORY
-
   # Create instance: SD_traffic_gen
   create_hier_cell_SD_traffic_gen [current_bd_instance .] SD_traffic_gen
 
   # Create instance: app
   create_hier_cell_app [current_bd_instance .] app
 
+  # Create instance: memory
+  create_hier_cell_memory [current_bd_instance .] memory
+
   # Create interface connections
-  connect_bd_intf_net -intf_net C0_DDR4_S_AXI_1 [get_bd_intf_pins MEMORY/C0_DDR4_S_AXI] [get_bd_intf_pins SD_traffic_gen/to_mem]
-  connect_bd_intf_net -intf_net C0_SYS_CLK_0_1 [get_bd_intf_ports C0_SYS_CLK_0] [get_bd_intf_pins MEMORY/C0_SYS_CLK_0]
-  connect_bd_intf_net -intf_net DDR_C0_DDR4_0 [get_bd_intf_ports C0_DDR4_0] [get_bd_intf_pins MEMORY/C0_DDR4_0]
-  connect_bd_intf_net -intf_net SD_AXIS_traffic_gen_0_to_app [get_bd_intf_pins SD_traffic_gen/to_app] [get_bd_intf_pins app/S_AXIS]
-  connect_bd_intf_net -intf_net fake_app_M_AXIS [get_bd_intf_pins SD_traffic_gen/from_app] [get_bd_intf_pins app/M_AXIS]
+  connect_bd_intf_net -intf_net C0_DDR4_S_AXI_1 [get_bd_intf_pins SD_traffic_gen/to_mem] [get_bd_intf_pins memory/to_mem]
+  connect_bd_intf_net -intf_net C0_SYS_CLK_0_1 [get_bd_intf_ports ddr_clk_DS] [get_bd_intf_pins memory/ddr_clk_DS]
+  connect_bd_intf_net -intf_net DDR_C0_DDR4_0 [get_bd_intf_ports C0_DDR4_0] [get_bd_intf_pins memory/C0_DDR4_0]
+  connect_bd_intf_net -intf_net SD_AXIS_traffic_gen_0_to_app [get_bd_intf_pins SD_traffic_gen/to_app] [get_bd_intf_pins app/to_app]
+  connect_bd_intf_net -intf_net fake_app_M_AXIS [get_bd_intf_pins SD_traffic_gen/from_app] [get_bd_intf_pins app/from_app]
   connect_bd_intf_net -intf_net traffic_clk_DS_1 [get_bd_intf_ports traffic_clk_DS] [get_bd_intf_pins app/traffic_clk_DS]
 
   # Create port connections
-  connect_bd_net -net DDR_c0_ddr4_ui_clk [get_bd_pins MEMORY/c0_ddr4_ui_clk] [get_bd_pins SD_traffic_gen/mem_clk]
-  connect_bd_net -net DDR_interconnect_aresetn [get_bd_pins MEMORY/interconnect_aresetn] [get_bd_pins SD_traffic_gen/mem_rst]
+  connect_bd_net -net DDR_c0_ddr4_ui_clk [get_bd_pins SD_traffic_gen/mem_clk] [get_bd_pins memory/mem_clk]
+  connect_bd_net -net DDR_interconnect_aresetn [get_bd_pins SD_traffic_gen/mem_rstn] [get_bd_pins memory/mem_rstn]
   connect_bd_net -net M02_ARESETN_1 [get_bd_pins SD_traffic_gen/traffic_clk_rstn] [get_bd_pins app/traffic_clk_rstn]
   connect_bd_net -net Net [get_bd_pins SD_traffic_gen/traffic_clk] [get_bd_pins app/traffic_clk]
   connect_bd_net -net ext_reset_in_0_1 [get_bd_ports ext_rstn] [get_bd_pins app/ext_reset_in]
   connect_bd_net -net rst_1 [get_bd_pins SD_traffic_gen/traffic_clk_rst] [get_bd_pins app/traffic_clk_rst]
 
   # Create address segments
-  create_bd_addr_seg -range 0x000400000000 -offset 0x00000000 [get_bd_addr_spaces SD_traffic_gen/SD_AXIS_traffic_gen_0/to_mem] [get_bd_addr_segs MEMORY/ddr4_0/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] SEG_ddr4_0_C0_DDR4_ADDRESS_BLOCK
-  create_bd_addr_seg -range 0x00010000 -offset 0xA0030000 [get_bd_addr_spaces SD_traffic_gen/software/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs SD_traffic_gen/SD_AXIS_traffic_gen_0/s_axilite_ctrl/reg0] SEG_SD_AXIS_traffic_gen_0_reg0
-  create_bd_addr_seg -range 0x00010000 -offset 0xA0010000 [get_bd_addr_spaces SD_traffic_gen/software/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs SD_traffic_gen/software/AXIDMAs/axi_dma_0/S_AXI_LITE/Reg] SEG_axi_dma_0_Reg
-  create_bd_addr_seg -range 0x00010000 -offset 0xA0020000 [get_bd_addr_spaces SD_traffic_gen/software/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs SD_traffic_gen/software/AXIDMAs/axi_dma_1/S_AXI_LITE/Reg] SEG_axi_dma_1_Reg
+  create_bd_addr_seg -range 0x000400000000 -offset 0x00000000 [get_bd_addr_spaces SD_traffic_gen/SD_AXIS_traffic_gen_0/to_mem] [get_bd_addr_segs memory/ddr4_0/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] SEG_ddr4_0_C0_DDR4_ADDRESS_BLOCK
+  create_bd_addr_seg -range 0x00001000 -offset 0xA0000000 [get_bd_addr_spaces SD_traffic_gen/software/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs SD_traffic_gen/SD_AXIS_traffic_gen_0/s_axilite_ctrl/reg0] SEG_SD_AXIS_traffic_gen_0_reg0
+  create_bd_addr_seg -range 0x00001000 -offset 0xA0001000 [get_bd_addr_spaces SD_traffic_gen/software/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs SD_traffic_gen/software/AXIDMAs/axi_dma_0/S_AXI_LITE/Reg] SEG_axi_dma_0_Reg
+  create_bd_addr_seg -range 0x00001000 -offset 0xA0002000 [get_bd_addr_spaces SD_traffic_gen/software/zynq_ultra_ps_e_0/Data] [get_bd_addr_segs SD_traffic_gen/software/AXIDMAs/axi_dma_1/S_AXI_LITE/Reg] SEG_axi_dma_1_Reg
   create_bd_addr_seg -range 0x000800000000 -offset 0x000800000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_0/Data_SG] [get_bd_addr_segs SD_traffic_gen/software/zynq_ultra_ps_e_0/SAXIGP2/HP0_DDR_HIGH] SEG_zynq_ultra_ps_e_0_HP0_DDR_HIGH
   create_bd_addr_seg -range 0x000800000000 -offset 0x000800000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_0/Data_MM2S] [get_bd_addr_segs SD_traffic_gen/software/zynq_ultra_ps_e_0/SAXIGP2/HP0_DDR_HIGH] SEG_zynq_ultra_ps_e_0_HP0_DDR_HIGH
   create_bd_addr_seg -range 0x000800000000 -offset 0x000800000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_0/Data_S2MM] [get_bd_addr_segs SD_traffic_gen/software/zynq_ultra_ps_e_0/SAXIGP2/HP0_DDR_HIGH] SEG_zynq_ultra_ps_e_0_HP0_DDR_HIGH
@@ -1259,8 +1259,8 @@ proc create_root_design { parentCell } {
   create_bd_addr_seg -range 0x20000000 -offset 0xC0000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_0/Data_SG] [get_bd_addr_segs SD_traffic_gen/software/zynq_ultra_ps_e_0/SAXIGP2/HP0_QSPI] SEG_zynq_ultra_ps_e_0_HP0_QSPI
   create_bd_addr_seg -range 0x20000000 -offset 0xC0000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_0/Data_MM2S] [get_bd_addr_segs SD_traffic_gen/software/zynq_ultra_ps_e_0/SAXIGP2/HP0_QSPI] SEG_zynq_ultra_ps_e_0_HP0_QSPI
   create_bd_addr_seg -range 0x20000000 -offset 0xC0000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_0/Data_S2MM] [get_bd_addr_segs SD_traffic_gen/software/zynq_ultra_ps_e_0/SAXIGP2/HP0_QSPI] SEG_zynq_ultra_ps_e_0_HP0_QSPI
-  create_bd_addr_seg -range 0x000400000000 -offset 0x00000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_1/Data_MM2S] [get_bd_addr_segs MEMORY/ddr4_0/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] SEG_ddr4_0_C0_DDR4_ADDRESS_BLOCK
-  create_bd_addr_seg -range 0x000400000000 -offset 0x00000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_1/Data_S2MM] [get_bd_addr_segs MEMORY/ddr4_0/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] SEG_ddr4_0_C0_DDR4_ADDRESS_BLOCK
+  create_bd_addr_seg -range 0x000400000000 -offset 0x00000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_1/Data_MM2S] [get_bd_addr_segs memory/ddr4_0/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] SEG_ddr4_0_C0_DDR4_ADDRESS_BLOCK
+  create_bd_addr_seg -range 0x000400000000 -offset 0x00000000 [get_bd_addr_spaces SD_traffic_gen/software/AXIDMAs/axi_dma_1/Data_S2MM] [get_bd_addr_segs memory/ddr4_0/C0_DDR4_MEMORY_MAP/C0_DDR4_ADDRESS_BLOCK] SEG_ddr4_0_C0_DDR4_ADDRESS_BLOCK
 
 
   # Restore current instance
