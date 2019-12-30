@@ -8,11 +8,11 @@
 -  set the mmap base and ip mapped addresses
 -  have a look at your vivado register editor before set this
    ----------------------------------------------------- */
-#define MAP_BASE 0xA0020000
-#define MAP_SIZE 0x20000
+#define MAP_BASE 0xA0000000
+#define MAP_SIZE 0x10000
 #define DMA_BUFFER_SIZE 4*1024*1024 //4MB
-#define DMA_OFFSET 0
-#define TRAFFIC_GEN_OFFSET 0x10000
+#define DMA_OFFSET 0x2000
+#define TRAFFIC_GEN_OFFSET 0x0
 
 /* -----------------------------------------------------
 -  choose which AXIDMA to use when there are multiple
@@ -22,5 +22,4 @@
 /* -----------------------------------------------------
 -  clock period
    ----------------------------------------------------- */
-
-#define CLOCK_PERIOD 4
+#define CLOCK_PERIOD 5
