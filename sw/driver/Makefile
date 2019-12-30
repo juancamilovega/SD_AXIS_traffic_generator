@@ -3,7 +3,7 @@ C_FLAGS = -std=c++0x
 HEADERS = -Iinclude -I.
 OUTDIR = output
 TMPDIR = tmp
-OBJS_Name = axil_ctrl bin_reader data_handler ps2pldatamover libaxidma control_handler arg_parser main
+OBJS_Name = axil_ctrl bin_reader data_handler host2fpga_datamover control_handler arg_parser main
 TARGETS = $(addsuffix .o,$(addprefix $(TMPDIR)/,$(OBJS_Name)))
 
 $(OUTDIR)/traffic_gen: $(TARGETS)

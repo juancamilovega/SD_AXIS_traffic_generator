@@ -22,8 +22,8 @@ int DATA_HANDLER::move_data() {
 		//file to HOST DDR
 		if (bin_reader.dump_to_buffer(data_mover.buf, size_to_transfer)) return 1;
 		//HOST DDR to FPGA DDR
-		if (data_mover.transfer(fpga_offset, size_to_transfer)) return 1;
-		fpga_offset += DMA_BUFFER_SIZE;
+		if (data_mover.transfer(hw_offset, size_to_transfer)) return 1;
+		hw_offset += DMA_BUFFER_SIZE;
 		if (total_transfer_size <= DMA_BUFFER_SIZE) break;
 		total_transfer_size -= DMA_BUFFER_SIZE;
 	}

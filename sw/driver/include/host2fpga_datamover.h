@@ -7,7 +7,7 @@ typedef uint32_t u32;
 #define low32(address) ((int)address)
 #define high32(address) ((int)(address>>32))
 
-class SW2HW_DATAMOVER {
+class HOST2FPGA_DATAMOVER {
 public:
 	void *buf;
 	int init(AXIL_CONTROLLER * controller);
