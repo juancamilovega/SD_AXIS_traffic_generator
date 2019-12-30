@@ -1,23 +1,19 @@
-####200M CLOCK###############################################
-#create_clock -period 5.000 [get_ports clk200_clk_p]
-#set_property PACKAGE_PIN N13 [get_ports clk200_clk_p]
-#set_property PACKAGE_PIN M13 [get_ports clk200_clk_n]
-#set_property IOSTANDARD LVDS_25 [get_ports clk200_clk_p]
-#set_property IOSTANDARD LVDS_25 [get_ports clk200_clk_n]
-
-
-###GT REF CLOCK#############################################
-#create_clock -period 3.103 [get_ports gt_ref_clk_p]
-#set_property PACKAGE_PIN L32 [get_ports gt_ref_clk_p]
-#set_property PACKAGE_PIN L33 [get_ports gt_ref_clk_n]
-
-##create_clock -period 3.103 [get_ports gt_ref1_clk_p]
-##set_property PACKAGE_PIN R32 [get_ports gt_ref1_clk_p]
-##set_property PACKAGE_PIN R33 [get_ports gt_ref1_clk_n]
-
-create_clock -period 10.000 [get_ports sys_clk_p]
-set_property LOC [get_package_pins -of_objects [get_bels [get_sites -filter {NAME =~ *COMMON*} -of_objects [get_iobanks -of_objects [get_sites GTHE4_CHANNEL_X0Y7]]]/REFCLK0P]] [get_ports sys_clk_p]
-set_property LOC [get_package_pins -of_objects [get_bels [get_sites -filter {NAME =~ *COMMON*} -of_objects [get_iobanks -of_objects [get_sites GTHE4_CHANNEL_X0Y7]]]/REFCLK0N]] [get_ports sys_clk_n]
+## EXTERNAL RESET#########################################
+set_property PACKAGE_PIN B6 [get_ports ext_rstn]
+set_property IOSTANDARD LVCMOS33 [get_ports ext_rstn]
+## TRAFFIC CLOCK##########################################
+create_clock -period 5.000 [get_ports traffic_clk_DS_clk_p]
+set_property PACKAGE_PIN N13 [get_ports traffic_clk_DS_clk_p]
+set_property PACKAGE_PIN M13 [get_ports traffic_clk_DS_clk_n]
+set_property IOSTANDARD LVDS_25 [get_ports traffic_clk_DS_clk_p]
+set_property IOSTANDARD LVDS_25 [get_ports traffic_clk_DS_clk_n]
+## PCIE CLOCK#############################################
+create_clock -period 10.000 [get_ports pcie_clk_DS_clk_p]
+set_property LOC [get_package_pins -of_objects [get_bels [get_sites -filter {NAME =~ *COMMON*} -of_objects [get_iobanks -of_objects [get_sites GTHE4_CHANNEL_X0Y7]]]/REFCLK0P]] [get_ports pcie_clk_DS_clk_p]
+set_property LOC [get_package_pins -of_objects [get_bels [get_sites -filter {NAME =~ *COMMON*} -of_objects [get_iobanks -of_objects [get_sites GTHE4_CHANNEL_X0Y7]]]/REFCLK0N]] [get_ports pcie_clk_DS_clk_n]
+## DDR CLOCK##############################################
+set_property PACKAGE_PIN AR27 [get_ports ddr_clk_DS_clk_p]
+set_property PACKAGE_PIN AT27 [get_ports ddr_clk_DS_clk_n]
 
 ## DDR4###################################################
 set_property IOSTANDARD DIFF_POD12_DCI [get_ports {C0_DDR4_0_dqs_c[0]}]
@@ -584,8 +580,6 @@ set_property PACKAGE_PIN AU13 [get_ports {C0_DDR4_0_dqs_t[7]}]
 set_property PACKAGE_PIN AK23 [get_ports {C0_DDR4_0_odt[0]}]
 set_property PACKAGE_PIN AJ24 [get_ports {C0_DDR4_0_odt[1]}]
 set_property PACKAGE_PIN AT25 [get_ports C0_DDR4_0_reset_n]
-set_property PACKAGE_PIN AT27 [get_ports C0_SYS_CLK_0_clk_n]
-set_property PACKAGE_PIN AR27 [get_ports C0_SYS_CLK_0_clk_p]
 set_property PACKAGE_PIN AU25 [get_ports {C0_DDR4_0_adr[0]}]
 set_property PACKAGE_PIN AN26 [get_ports {C0_DDR4_0_adr[1]}]
 set_property PACKAGE_PIN AR24 [get_ports {C0_DDR4_0_adr[2]}]
