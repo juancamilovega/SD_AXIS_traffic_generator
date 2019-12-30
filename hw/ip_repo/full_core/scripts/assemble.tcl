@@ -48,19 +48,20 @@ foreach port [get_bd_intf_ports *_0] {
 
 set_property name traffic_clk [get_bd_ports ap_clk]
 set_property name rstn [get_bd_ports ap_rst_n]
-set_property name ddr_clk [get_bd_ports ap_clk_1]
-set_property name to_ddr [get_bd_intf_ports M_AXI_MM2S]
+set_property name mem_clk [get_bd_ports ap_clk_1]
+set_property name to_mem [get_bd_intf_ports M_AXI_MM2S]
 set_property name s_axilite_ctrl [get_bd_intf_ports s_axi_AXILiteS]
 
 connect_bd_net [get_bd_ports traffic_clk] [get_bd_pins datamover_controller/ap_clk]
 connect_bd_net [get_bd_ports traffic_clk] [get_bd_pins axi_datamover/m_axis_mm2s_cmdsts_aclk]
 connect_bd_net [get_bd_ports traffic_clk] [get_bd_pins cross_domain_fifo/m_axis_aclk]
 connect_bd_net [get_bd_ports traffic_clk] [get_bd_pins traffic_gen_tx/ap_clk]
-connect_bd_net [get_bd_ports ddr_clk] [get_bd_pins axi_datamover/m_axi_mm2s_aclk]
-connect_bd_net [get_bd_ports ddr_clk] [get_bd_pins proc_sys_reset/slowest_sync_clk]
-connect_bd_net [get_bd_ports ddr_clk] [get_bd_pins cross_domain_fifo/s_axis_aclk]
+connect_bd_net [get_bd_ports mem_clk] [get_bd_pins axi_datamover/m_axi_mm2s_aclk]
+connect_bd_net [get_bd_ports mem_clk] [get_bd_pins proc_sys_reset/slowest_sync_clk]
+connect_bd_net [get_bd_ports mem_clk] [get_bd_pins cross_domain_fifo/s_axis_aclk]
 connect_bd_net [get_bd_pins sw_interface/rst] [get_bd_pins traffic_gen_tx/ap_rst]
 connect_bd_net [get_bd_pins sw_interface/start] [get_bd_pins datamover_controller/start]
+connect_bd_net [get_bd_pins sw_interface/offset] [get_bd_pins datamover_controller/offset]
 connect_bd_net [get_bd_pins sw_interface/transfer_length] [get_bd_pins datamover_controller/length]
 connect_bd_net [get_bd_pins datamover_controller/ap_rst] [get_bd_pins sw_interface/rst]
 connect_bd_net [get_bd_pins util_vector_logic/Op1] [get_bd_pins sw_interface/rst]
@@ -78,8 +79,8 @@ connect_bd_net [get_bd_pins traffic_gen_tx/pkt_cnt_tx] [get_bd_pins sw_interface
 connect_bd_net [get_bd_pins proc_sys_reset/ext_reset_in] [get_bd_pins sw_interface/rst]
 
 assign_bd_address
-set_property offset 0x0000000000000000 [get_bd_addr_segs {axi_datamover/Data_MM2S/SEG_to_ddr_Reg}]
-set_property range 16G [get_bd_addr_segs {axi_datamover/Data_MM2S/SEG_to_ddr_Reg}]
+set_property offset 0x0000000000000000 [get_bd_addr_segs {axi_datamover/Data_MM2S/SEG_to_mem_Reg}]
+set_property range 16G [get_bd_addr_segs {axi_datamover/Data_MM2S/SEG_to_mem_Reg}]
 make_wrapper -files [get_files $project_dir/$project_name/${project_name}.srcs/sources_1/bd/$project_name/${project_name}.bd] -top
 save_bd_design
 ###################################################################################################
@@ -112,7 +113,7 @@ set_property description $project_name [ipx::current_core]
 ipx::associate_bus_interfaces -busif from_app -clock traffic_clk [ipx::current_core]
 ipx::associate_bus_interfaces -busif to_app -clock traffic_clk [ipx::current_core]
 ipx::associate_bus_interfaces -busif s_axilite_ctrl -clock traffic_clk [ipx::current_core]
-ipx::associate_bus_interfaces -busif to_ddr -clock ddr_clk [ipx::current_core]
+ipx::associate_bus_interfaces -busif to_mem -clock mem_clk [ipx::current_core]
 ipx::associate_bus_interfaces -clock traffic_clk -reset rst [ipx::current_core]
 ipx::associate_bus_interfaces -busif from_cmp_fifo -clock traffic_clk [ipx::current_core]
 ipx::associate_bus_interfaces -busif to_cmp_fifo -clock traffic_clk [ipx::current_core]
