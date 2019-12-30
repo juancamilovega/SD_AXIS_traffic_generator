@@ -16,7 +16,7 @@
 -  default clock freqency is 250MHz
 -  cannot be largger than 63/64 of the memory clock
    ----------------------------------------------------- */
-#define CLOCK_PERIOD 4
+#define CLOCK_PERIOD 5
 
 /* -----------------------------------------------------
 -  system paramerters
