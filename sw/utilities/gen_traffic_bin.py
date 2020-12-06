@@ -3,7 +3,6 @@ import argparse
 import sys
 import re
 import os
-
 #Utility functions##########################
 def msg(name=None):
 	return '''gen_traffic_bin.py -i <input csv file path> [-o <output binary file path>]'''
@@ -105,18 +104,10 @@ class binary_writer:
 							self.close()
 							return 0
 						for letter in tkeep_str:
-							if letter.lower() == 'f':
-								mty = mty+4
-							elif letter.lower() == 'e':
-								mty = mty+3
-							elif letter.lower() == 'c':
-								mty = mty+2
-							elif letter.lower() == '8':
-								mty = mty+1
-							elif letter.lower() != '0':
-								print("Error at line #"+lineNum_str+" : invalid TKEEP value " + tkeep_str)
-								self.close()
-								return 0
+							bin_letter = bin(int(letter.lower(),16))[2:]
+							for bit_valid in bin_letter:
+								if bit_valid == '1':
+									mty = mty+1
 						self.actual_data_size = self.actual_data_size + mty
 					#tlast
 					if self.field_idx_dict['tlast'] != -1:

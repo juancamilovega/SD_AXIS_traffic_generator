@@ -61,9 +61,9 @@ class arg_parser:
 			pp.print(i, self.N_packets-1)
 		print("Finish assigning packet size")
 		self.datawidth = self.args.dwidth
-		if not isPowerOfTwo(self.datawidth):
-			print("Error from Arg Parser: data width has to be power of 2")
-			return True
+		#if not isPowerOfTwo(self.datawidth):
+		#	print("Error from Arg Parser: data width has to be power of 2")
+		#	return True
 		if self.args.no_data:
 			self.has_data = False
 		else:
@@ -135,6 +135,11 @@ class csv_writer:
 			self.f.write('tlast,')
 		self.f.write('tvalid\n')
 	def write_line(self):
+		cycleid_string=""
+		packetid_string=""
+		data_string=""
+		keep_string=""
+		valid_string=""
 		if self.cycle_id == self.args.idle_cycles[self.idle_idx]:
 			if self.idle_idx != len(self.args.idle_cycles)-1:
 				self.idle_idx = self.idle_idx+1
@@ -142,34 +147,47 @@ class csv_writer:
 		else:
 			is_idle = False
 		if self.args.denote_cycle_id:
-			self.str_to_file = self.str_to_file + str(self.cycle_id)+','
+			cycleid_string=str(self.cycle_id)
 		if self.args.denote_packet_id:
-			self.str_to_file = self.str_to_file + str(self.packet_id)+','
+			packetid_string = str(self.packet_id)
+			if self.args.denote_cycle_id:
+				packetid_string = ','+packetid_string
+		if self.args.has_keep:
+			keep_list = [0 for _ in range(int((self.args.datawidth-1)/4)*4+4)]
+			if not is_idle:
+				for i in range(self.args.datawidth):
+					if self.packet_remain_bytes - i > 0:
+						keep_list[self.args.datawidth-1-i] = 1
+			keep_string = ""
+			for i in range(int(len(keep_list)/4)):
+				keep_string = str('%x' % (keep_list[i*4]+2*keep_list[i*4+1]+4*keep_list[i*4+2]+8*keep_list[i*4+3])) + keep_string
+			keep_string = '0x'+keep_string
+			if self.args.denote_cycle_id or self.args.denote_packet_id or self.args.has_data:
+				keep_string = ','+keep_string
 		if self.args.has_data:
 			if is_idle:
 				data_list = [0 for _ in range(self.args.datawidth)]
 			else:
 				data_list = [random.randint(0,255) for _ in range(self.args.datawidth)]
 			data_string = '0x'
-			for octet in data_list:
-				data_string = data_string + str('%02x' % octet)
-			self.str_to_file = self.str_to_file + data_string+','
-		if self.args.has_keep:
-			keep_list = [0 for _ in range(int(self.args.datawidth/4))]
-			if not is_idle:
-				for i in range(self.args.datawidth):
-					if self.packet_remain_bytes - i > 0:
-						keep_list[int(i/4)] = keep_list[int(i/4)] + (1<<(3-i%4))
-			keep_string = '0x'
-			for octet in keep_list:
-				keep_string = keep_string + str('%x' % octet)
-			self.str_to_file = self.str_to_file + keep_string+','
+			for i in range(len(data_list)):
+				if self.args.has_keep:
+					if keep_list[self.args.datawidth-1-i] == 1:
+						data_string = data_string + str('%02x' % data_list[i])
+					else:
+						data_string = data_string + "00"
+				else:
+					data_string = data_string + str('%02x' % data_list[i])
+			if self.args.denote_cycle_id or self.args.denote_packet_id:
+				data_string = ','+data_string
 		if self.args.has_last:
 			if is_idle or self.packet_remain_bytes > self.args.datawidth:
 				last_value = 0
 			else:
 				last_value = 1
-			self.str_to_file = self.str_to_file + str(last_value)+','
+			last_string = str(last_value)
+			if self.args.denote_cycle_id or self.args.denote_packet_id or self.args.has_data or self.args.has_keep:
+				last_string = ','+last_string
 		if is_idle:
 			valid_value = 0
 		else:
@@ -179,7 +197,11 @@ class csv_writer:
 				self.packet_id = self.packet_id+1
 				if self.packet_id < self.args.N_packets:
 					self.packet_remain_bytes = self.args.packets_size[self.packet_id]
-		self.str_to_file = self.str_to_file + str(valid_value)+'\n'
+		valid_string = str(valid_value)+'\n'
+		if self.args.denote_cycle_id or self.args.denote_packet_id or self.args.has_data or self.args.has_keep or self.args.has_last:
+			valid_string = ','+valid_string
+		self.str_to_file = self.str_to_file + cycleid_string + packetid_string + data_string + keep_string + last_string + valid_string
+
 		if self.cycle_id % 1000 == 0 or self.cycle_id == self.args.N_total_cycles-1:
 			self.f.write(self.str_to_file)
 			self.str_to_file = ''

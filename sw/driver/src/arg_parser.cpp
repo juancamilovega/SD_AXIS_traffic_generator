@@ -60,8 +60,8 @@ int ARG_PARSER::parse(int argc, char** argv) {
 	if (argc >= 4) {
 		if (arg0.compare(string("-n")) == 0 || arg0.compare(string("--iter_num")) == 0) {
 			iter_num = stoi(argv[2]);
-			if (iter_num <= 0) {
-				cout << "Error: iteration num should be greater than 0" << endl << endl;
+			if (iter_num < 0) {
+				cout << "Error: iteration num should be greater than or equal to 0" << endl << endl;
 				return 1;
 			}
 		} else if (arg0.compare(string("--offset")) == 0 || arg0.compare(string("-o")) == 0) { 
